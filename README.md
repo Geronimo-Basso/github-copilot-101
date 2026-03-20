@@ -8,14 +8,11 @@ This repo is designed to help teams ramp up on GitHub Copilot by providing struc
 
 ## 📂 Labs
 
-| # | Feature | Description |
-|---|---------|-------------|
-| 01 | [Code Completions](./01-code-completions/) | Inline code suggestions and tab-completions as you type |
-| 02 | [Copilot Chat](./02-copilot-chat/) | Ask questions, explain code, generate tests, and more via chat |
-| 03 | [Copilot Edits](./03-copilot-edits/) | Multi-file editing powered by natural language instructions |
-| 04 | [Copilot CLI](./04-copilot-cli/) | AI assistance directly in your terminal |
-| 05 | [Copilot for Pull Requests](./05-copilot-for-pull-requests/) | Automated PR summaries, reviews, and suggestions |
-| 06 | [Copilot Extensions](./06-copilot-extensions/) | Build and use custom Copilot extensions |
+| Feature | Description |
+|---------|-------------|
+| [Code Completions](./code-completions/) | Inline code suggestions and tab-completions as you type |
+| [Copilot Chat](./copilot-chat/) | Ask questions, explain code, generate tests, and more via chat |
+| [Copilot CLI](./copilot-cli/) | AI assistance directly in your terminal |
 
 Each lab folder contains **python/** and **java/** sub-folders with language-specific exercises.
 
