@@ -14,7 +14,7 @@ By the end of this lab you will have used all three modes to fix a bug, add new 
 
 ## Step 1: Hello Copilot
 
-Welcome to your **"Getting Started with GitHub Copilot"** exercise! :robot:
+Welcome to your **"Getting Started with GitHub Copilot"** exercise!
 
 In this exercise, you will be using different GitHub Copilot features to work on a website that allows students of Mergington High School to sign up for extracurricular activities. 🎻 ⚽️ ♟️
 
@@ -39,7 +39,7 @@ As you work, you'll find GitHub Copilot can help out in several places across th
 > [!TIP]
 > You can learn more about current and upcoming features in the [GitHub Copilot Features](https://docs.github.com/en/copilot/about-github-copilot/github-copilot-features) documentation.
 
-### :keyboard: Activity: Get a project intro from Copilot Chat
+### Activity: Get a project intro from Copilot Chat
 
 Let's start up our development environment, use copilot to learn a bit about the project, and then give it a test run.
 
@@ -68,7 +68,7 @@ Let's start up our development environment, use copilot to learn a bit about the
 
 1. Now that we know a bit more about the project, let's actually try running it!
 
-### :keyboard: Activity: Use Copilot to help remember a terminal command 🙋
+### Activity: Use Copilot to help remember a terminal command 🙋
 
 Great work! Now that we are familiar with the app and we know it works, let's ask copilot for help starting a branch so we can do some customizing.
 
@@ -113,7 +113,7 @@ In short, you can think of Copilot like a very specialized coworker. To be effec
 
 - **How do I make prompts?:** Being explicit and clear helps Copilot do the best job. But unlike some traditional systems, you can always clarify your direction with followup prompts.
 
-### :keyboard: Activity: Use Copilot to fix our registration bug :bug:
+### Activity: Use Copilot to fix our registration bug :bug:
 
 1. Let's ask Copilot to suggest where our bug might be coming from. Open the **Copilot Chat** panel in **Ask mode** and ask the following.
 
@@ -124,10 +124,10 @@ In short, you can think of Copilot like a very specialized coworker. To be effec
    > Where could this bug be coming from?
    > ```
 
-1. Now that we know the issue is in the `src/app.py` file and the `signup_for_activity` method, let's follow Copilot's recommendation and go fix it (semi-manually). We'll start with a comment and let Copilot finish the correction.
-   1. Open the `src/app.py` file.
+1. Now that we know the issue is in the `backend/app.py` file and the `signup_for_activity` method, let's follow Copilot's recommendation and go fix it (semi-manually). We'll start with a comment and let Copilot finish the correction.
+   1. Open the `backend/app.py` file.
 
-      > 💡 **Tip:** If Copilot mentioned `src/app.py` in chat, you can click the file directly in the chat view to open it.
+      > 💡 **Tip:** If Copilot mentioned `backend/app.py` in chat, you can click the file directly in the chat view to open it.
 
    1. Near the bottom of the file, find the `signup_for_activity` function.
 
@@ -170,13 +170,13 @@ In short, you can think of Copilot like a very specialized coworker. To be effec
 
    </details>
 
-### :keyboard: Activity: Let Copilot generate sample data 📋
+### Activity: Let Copilot generate sample data 📋
 
 In new project developments, it's often helpful to have some realistic looking fake data for testing. Copilot is excellent at this task, so let's add some more sample activities and introduce another way to interact with Copilot using **Inline Chat**
 
 **Inline Chat** and the **Copilot Chat** panel are similar, but differ in scope: Copilot Chat handles broader, multi-file or exploratory questions; Inline Chat is faster when you want targeted help on the exact line or block in front of you.
 
-1. Near the top of the `src/app.py` file (about line 23), find the `activities` variable, where our example extracurricular activities are configured.
+1. Near the top of the `backend/app.py` file (about line 23), find the `activities` variable, where our example extracurricular activities are configured.
 
 1. Highlight the entire `activities` dictionary by clicking and dragging your mouse from the top to the bottom of the dictionary. This will help provide context to Copilot for our next prompt.
 
@@ -264,7 +264,7 @@ In new project developments, it's often helpful to have some realistic looking f
 
 1. You can now go to your website and verify that the new activities are visible.
 
-### :keyboard: Activity: Use Copilot to describe our work 💬 (Optional)
+### Activity: Use Copilot to describe our work 💬 (Optional)
 
 Nice work fixing that bug and expanding the example activities! Now let's get our work committed and pushed to GitHub, again with the help of Copilot!
 
@@ -310,7 +310,7 @@ Agent mode uses tools to accomplish specialized tasks while processing a user re
 
 Now, let's give **Agent Mode** a try! 👩‍🚀
 
-### :keyboard: Activity: Use Copilot to add a new feature! :rocket:
+### Activity: Use Copilot to add a new feature! :rocket:
 
 Our website lists activities, but it's keeping the guest list secret 🤫 
 
@@ -320,9 +320,9 @@ Let's use Copilot to change the website to display signed up students under each
 
 1. Open the files related to our webpage then drag each editor window (or file) to the chat panel, informing Copilot to use them as context.
 
-   - `src/static/app.js`
-   - `src/static/index.html`
-   - `src/static/styles.css`
+   - `frontend/app.js`
+   - `frontend/index.html`
+   - `frontend/styles.css`
 
    > 🪧 **Note:** Adding files as context is optional. If you skip this, Copilot Agent Mode can still use tools like `#codebase` to search for relevant files from your prompt. Adding specific files helps point Copilot in the right direction, which is especially useful in larger codebases.
 
@@ -352,7 +352,7 @@ Let's use Copilot to change the website to display signed up students under each
 
    > 💡 **Tip:** You can accept the changes directly, modify them, or provide additional instruction to refine them using the chat interface.
 
-### :keyboard: Activity: Use Agent mode to add functional "unregister" buttons
+### Activity: Use Agent mode to add functional "unregister" buttons
 
 Let's experiment with some more open-ended requests that will add more functionality to our web application.
 
@@ -468,6 +468,250 @@ Your backend still has zero test coverage. Use **Plan Agent** to create a plan, 
 
    > 🪧 **Note:** Agent Mode may complete this in one pass, or it may need follow-up prompts from you.
 
+## Step 5: Fly Solo — Put It All Together 🧑‍✈️
+
+In the previous steps, we walked through each Copilot mode with guided prompts. Now it's time to take the training wheels off! In this step you will implement new features and improve the codebase using GitHub Copilot as your companion — but **we will not give you the exact prompts**. Think about what you've learned so far and craft your own prompts to get the job done.
+
+> 💡 **Tip:** Remember that the key to great Copilot results is clear context and explicit direction. Don't hesitate to iterate — if the first result isn't perfect, refine your prompt or provide follow-up instructions.
+
+### 📖 Theory: Prompt Crafting — Thinking Like a Copilot Whisperer
+
+Before you dive in, here are some principles to keep in mind when writing your own prompts:
+
+| Principle | 📝 Description | 🎯 Example |
+| --- | --- | --- |
+| **Be specific** | Tell Copilot exactly what you want, where, and how. | _"Read activities from `data/activities.json` instead of the hardcoded dictionary in `app.py`"_ |
+| **Provide context** | Attach relevant files or use `#codebase` so Copilot knows the full picture. | Drag `app.py` and `activities.json` into the chat panel. |
+| **Break it down** | Large tasks work better as a series of smaller, focused requests. | First move the data, then add new entries, then verify. |
+| **Iterate and refine** | Copilot remembers the conversation — follow up if the result needs adjustments. | _"That looks good, but also add error handling for a missing JSON file."_ |
+| **Choose the right mode** | Use **Ask** to explore, **Agent** to implement, and **Plan** to architect. | Use Ask Mode to learn about Swagger, then Agent Mode to add annotations. |
+
+---
+
+### Activity: Replace hardcoded data with a JSON file 📂 (Step 5.1)
+
+Currently, all the activity data lives as a hardcoded Python dictionary inside `backend/app.py`. In a real application this data would come from a database, a configuration file, or an external API. For our project, we already have a JSON file waiting at `backend/data/activities.json` — we just need to wire it up!
+
+#### Part A: Move the data source to JSON
+
+1. Start by exploring the current state of things. Open `backend/app.py` and `backend/data/activities.json` side by side so you can see both files.
+
+   > 💡 **Tip:** You can use **Ask Mode** first to understand how the hardcoded data is currently structured and what changes would be needed to load it from a file instead.
+
+1. Open the **Copilot Chat** panel and switch to **Agent** mode.
+
+1. Add both `backend/app.py` and `backend/data/activities.json` as context by dragging them into the chat panel.
+
+1. Now, craft a prompt that asks Copilot to:
+   - Load the activities data from the `data/activities.json` file instead of the hardcoded dictionary.
+   - Make sure the JSON file is read at application startup.
+   - Remove or replace the old hardcoded `activities` dictionary.
+
+   > 🪧 **Note:** We are intentionally not providing the exact prompt here. Think about what information Copilot needs to accomplish this task. Remember the principles from the theory section above!
+
+1. Review the changes Copilot proposes. Pay attention to:
+   - Is the file path correct and relative to where the app runs?
+   - Does it handle the case where the JSON file might not exist?
+   - Is the JSON structure compatible with how `activities` was used before?
+
+1. If everything looks good, press **Keep**. If not, provide follow-up instructions to refine the result.
+
+1. **Test it!** Restart your backend server and verify the website still loads all activities correctly.
+
+   **🎯 Goal: The app should work exactly as before, but now reading data from `activities.json`. ✅**
+
+   > 🪧 **Note:** If you run into import errors or file-not-found issues, ask Copilot to help you debug! This is a great opportunity to practice providing error context in your prompts.
+
+#### Part B: Expand the activities catalog
+
+Now that our data lives in a JSON file, it's much easier to manage. Let's make our school's extracurricular catalog look more impressive by adding more activities.
+
+1. Open `backend/data/activities.json` in the editor.
+
+1. Think of a prompt that asks Copilot to add more activities to the JSON file. Consider:
+   - How many new activities do you want?
+   - What categories should they cover? (sports, arts, academics, technology, etc.)
+   - Should they have realistic schedules, descriptions, and participant limits?
+
+1. Use either **Inline Chat** (`Cmd + I` / `Ctrl + I`) with the file selected, or **Agent Mode** in the chat panel — whichever you prefer.
+
+1. After Copilot generates the new activities, review them for consistency:
+   - Do they follow the same JSON structure as the existing entries?
+   - Are the schedules realistic and non-overlapping?
+   - Do the `max_participants` values make sense for each activity type?
+
+1. Restart the backend and refresh the frontend to verify the new activities appear on the website.
+
+   **🎯 Goal: Your activities page should now show a rich catalog of diverse extracurricular options. ✅**
+
+   > 💡 **Tip:** If the frontend layout looks cramped or broken with more activities, you can ask Copilot to adjust the CSS grid or card layout to better accommodate the larger list.
+
+---
+
+### Activity: Add a withdraw feature 🚪 (Step 5.2)
+
+So far, our app only lets students sign up for activities. But what happens when a student needs to drop an activity due to a scheduling conflict or a last-minute emergency? It would be great to let students withdraw so that another student can take their place.
+
+This is a **full-stack feature** — you'll need changes in both the backend and the frontend. Here's what needs to happen:
+
+#### 📖 Understanding the requirements
+
+Before writing any code, let's break down what this feature needs:
+
+| Component | What's Needed |
+| --- | --- |
+| **Backend** | A new API endpoint that accepts an activity name and a student email, then removes that student from the activity's participant list. |
+| **Frontend (JS)** | A function that calls the new backend endpoint when a student clicks a "withdraw" or "unregister" button. |
+| **Frontend (HTML/CSS)** | A UI element (button or icon) next to each participant or on the activity card that triggers the withdraw action. |
+
+> 💡 **Tip:** This is a great candidate for **Plan Agent**! You can first ask Copilot to create an implementation plan, review it, and then hand off to Agent Mode for the actual coding.
+
+#### Part A: Plan the implementation
+
+1. Open the **Copilot Chat** panel and switch to **Plan Agent**.
+
+1. Craft a prompt describing the withdraw feature. Be sure to mention:
+   - The need for a new backend endpoint (think about what HTTP method makes sense — `DELETE`? `POST`?).
+   - The frontend needs a way to trigger the withdrawal.
+   - The UI should update immediately without requiring a page refresh.
+
+1. Wait for Copilot to generate a plan. Review it carefully:
+   - Does the plan cover both backend and frontend changes?
+   - Does it include proper error handling (e.g., what if the student isn't registered)?
+   - Does it mention updating the UI after a successful withdrawal?
+
+1. If you have feedback, refine the plan with follow-up prompts. For example:
+   - _"Use a DELETE endpoint for the withdrawal"_
+   - _"Show a confirmation before withdrawing"_
+   - _"Make sure the participant list updates in real time"_
+
+#### Part B: Implement the feature
+
+1. Once you're happy with the plan, click **Start implementation** to hand off to **Agent Mode**.
+
+1. Watch Copilot make changes across multiple files. It should modify at least:
+   - `backend/app.py` — new endpoint
+   - `frontend/app.js` — new JavaScript function
+   - `frontend/index.html` and/or `frontend/styles.css` — UI updates
+
+1. When Copilot finishes, review all the proposed changes file by file.
+
+   > 🪧 **Note:** Pay special attention to the backend endpoint. Make sure it validates that:
+   > - The activity exists
+   > - The student is actually registered before trying to remove them
+   > - Appropriate HTTP status codes are returned for each error case
+
+1. **Test the full flow:**
+   - Sign up a student for an activity
+   - Verify they appear in the participant list
+   - Withdraw that student using the new feature
+   - Verify they are removed from the list
+   - Try withdrawing a student who isn't registered and check the error handling
+
+   **🎯 Goal: Students can sign up for and withdraw from activities, with the UI updating in real time. ✅**
+
+   <details>
+   <summary>Stuck? Here are some hints</summary><br/>
+
+   - For the backend, a `DELETE /activities/{activity_name}/withdraw?email=...` endpoint is a clean approach.
+   - In the frontend, you likely need an event listener on each participant's remove button that calls `fetch()` with the `DELETE` method.
+   - Don't forget to re-render the activity card after a successful withdrawal — reuse or refactor the existing rendering logic.
+
+   </details>
+
+---
+
+### Activity: Document your API with Swagger 📜 (Step 5.3)
+
+We've done a lot of work building out our API — we have endpoints for listing activities, signing up, and now withdrawing. But how would another developer know how to use our API? That's where **API documentation** comes in.
+
+#### 📖 Theory: What is Swagger / OpenAPI?
+
+FastAPI comes with built-in support for the [OpenAPI specification](https://swagger.io/specification/) (formerly known as Swagger). This means your API automatically gets interactive documentation — no extra setup required!
+
+| Feature | 📝 Description |
+| --- | --- |
+| **Swagger UI** | An interactive web page where you can see all endpoints and test them directly from the browser. Available at `/docs`. |
+| **ReDoc** | An alternative documentation view with a clean, readable layout. Available at `/redoc`. |
+| **OpenAPI Schema** | A machine-readable JSON specification of your API. Available at `/openapi.json`. |
+
+> 🪧 **Note:** By default, FastAPI generates documentation from your Python function signatures and docstrings. The more detail you add to your code, the better the documentation becomes!
+
+#### Part A: Explore the current documentation
+
+1. Make sure your backend server is running.
+
+1. Open your browser and navigate to `http://localhost:8000/docs` (adjust the port if needed).
+
+1. Take a moment to explore the current Swagger UI:
+   - What endpoints are listed?
+   - How much detail does each endpoint show?
+   - Are request/response models clearly described?
+
+1. You can also use **Ask Mode** in Copilot to learn more about Swagger and what makes good API documentation:
+
+   > 🪧 **Note:** This is a great example of using **Ask Mode** for learning rather than coding. Not everything needs Agent Mode!
+
+   Think of questions like:
+   - _"What is Swagger and how does FastAPI use it?"_
+   - _"What are best practices for documenting FastAPI endpoints?"_
+   - _"How do I add request/response models, descriptions, and examples to my endpoints?"_
+
+#### Part B: Enhance the endpoint documentation
+
+Now let's improve the API documentation by adding richer metadata to our endpoints.
+
+1. Switch to **Agent Mode** in the Copilot Chat panel.
+
+1. Add `backend/app.py` as context.
+
+1. Craft a prompt asking Copilot to improve the Swagger documentation. Think about adding:
+   - Descriptive **summary** and **description** fields for each endpoint
+   - Proper **response models** using Pydantic `BaseModel` classes
+   - **Example values** for request parameters
+   - **HTTP status code descriptions** (e.g., 200, 400, 404)
+   - **Tags** to group related endpoints together (e.g., "Activities", "Registration")
+
+   > 💡 **Tip:** You don't have to do everything at once. Start with one improvement (like adding response models), verify it works in the Swagger UI, and then ask for more enhancements.
+
+1. After Copilot makes changes, restart the backend and revisit `http://localhost:8000/docs`.
+
+1. Compare the documentation before and after. You should see:
+   - Richer descriptions for each endpoint
+   - Clearly defined request and response schemas
+   - Example values that make it easy to test endpoints directly from the Swagger UI
+
+   **🎯 Goal: Your Swagger documentation should clearly describe every endpoint, its parameters, possible responses, and include helpful examples. ✅**
+
+   <details>
+   <summary>Example improvements to look for</summary><br/>
+
+   Here are some things that make Swagger documentation shine:
+
+   - **Tags:** Endpoints grouped by category (e.g., `Activities`, `Registration`)
+   - **Response models:** Instead of just returning a raw dict, define Pydantic models like `ActivityResponse`, `SignupResponse`, etc.
+   - **Status codes:** Each endpoint documents what happens on success (200/201), bad request (400), and not found (404).
+   - **Descriptions:** Each endpoint has a clear one-liner summary and a longer description explaining its behavior.
+   - **Examples:** Request and response examples so developers can quickly understand the expected format.
+
+   </details>
+
+#### Part C: Validate and test from Swagger UI
+
+1. With your improved documentation in place, use the **Swagger UI** at `/docs` to test each endpoint interactively:
+   - Try listing all activities
+   - Sign up a student for an activity
+   - Withdraw a student from an activity
+   - Attempt invalid operations (e.g., signing up twice, withdrawing someone who isn't registered)
+
+1. Verify that the error responses match the documentation — the status codes and error messages should be consistent.
+
+   > 💡 **Tip:** If you find any inconsistencies between the actual API behavior and the documentation, ask Copilot to fix them. This is a common real-world task — keeping docs and code in sync!
+
+## Step 6: Finally commit time
+
+Ask github copilot chat to do a recap of everything you have done so far, you can commit this if you would like too or just keep it as a personal summary. 
+
 ## Congratulations! 🎉
 
 You've completed Lab 02! Here's a recap of what you learned:
@@ -478,3 +722,4 @@ You've completed Lab 02! Here's a recap of what you learned:
 - **Plan Agent** — Designed a testing strategy collaboratively before handing off implementation to Agent Mode
 
 You're now equipped to use all three Copilot Chat modes in your daily workflow. Head over to the other labs in this repository to keep exploring!
+
