@@ -281,8 +281,6 @@ Nice work fixing that bug and expanding the example activities! Now let's get ou
 
 1. Press the **Commit** button and **Sync Changes** button to push your changes to GitHub.
 
-1. Wait a moment for Mona to check your work, provide feedback, and share the next lesson.
-
 ## Step 3: Engage Hyperdrive - Copilot Agent Mode 🚀
 
 ### 📖 Theory: What is Copilot Agent Mode?
