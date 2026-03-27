@@ -5,6 +5,7 @@ A super simple FastAPI application that allows students to view and sign up
 for extracurricular activities at Mergington High School.
 """
 
+import json
 from fastapi import FastAPI, HTTPException
 from fastapi.staticfiles import StaticFiles
 from fastapi.responses import RedirectResponse
@@ -19,27 +20,15 @@ current_dir = Path(__file__).parent
 app.mount("/static", StaticFiles(directory=os.path.join(current_dir.parent,
           "frontend")), name="static")
 
-# In-memory activity database
-activities = {
-    "Chess Club": {
-        "description": "Learn strategies and compete in chess tournaments",
-        "schedule": "Fridays, 3:30 PM - 5:00 PM",
-        "max_participants": 12,
-        "participants": ["michael@mergington.edu", "daniel@mergington.edu"]
-    },
-    "Programming Class": {
-        "description": "Learn programming fundamentals and build software projects",
-        "schedule": "Tuesdays and Thursdays, 3:30 PM - 4:30 PM",
-        "max_participants": 20,
-        "participants": ["emma@mergington.edu", "sophia@mergington.edu"]
-    },
-    "Gym Class": {
-        "description": "Physical education and sports activities",
-        "schedule": "Mondays, Wednesdays, Fridays, 2:00 PM - 3:00 PM",
-        "max_participants": 30,
-        "participants": ["john@mergington.edu", "olivia@mergington.edu"]
-    }
-}
+# Load activities from JSON file at startup
+activities_json_path = current_dir / "data" / "activities.json"
+try:
+    with open(activities_json_path, "r", encoding="utf-8") as f:
+        activities = json.load(f)
+except FileNotFoundError:
+    raise RuntimeError(f"Activities data file not found: {activities_json_path}")
+except json.JSONDecodeError as e:
+    raise RuntimeError(f"Invalid JSON in activities data file: {e}")
 
 
 @app.get("/")
