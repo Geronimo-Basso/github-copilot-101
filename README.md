@@ -256,7 +256,7 @@ Now let's verify that Copilot actually uses the instructions you just created.
    > ![Static Badge](https://img.shields.io/badge/-Prompt-text?style=social&logo=github%20copilot)
    >
    > ```prompt
-   > Briefly explain this project to me
+   > Can you briefly describe the project structure?
    > ```
 
    Copilot should now mention FastAPI, Uvicorn, activities, flights, and accommodations — language it wouldn't have known without your instructions. That alone is a huge productivity boost for onboarding teammates!
