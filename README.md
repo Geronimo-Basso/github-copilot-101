@@ -12,6 +12,21 @@ Today's goal is to learn how to **customize GitHub Copilot's behavior** so its o
 
 By the end of this lab you will have set up custom instructions at every scope, fixed non-compliant content, and built prompt files to automate repetitive tasks — all on a FastAPI tourism website served by Uvicorn. 🌊
 
+> ⚠️ **Important:** All customization files created during this lab — `copilot-instructions.md`, instruction files (`*.instructions.md`), and prompt files (`*.prompt.md`) — must live inside the **`.github`** directory, and this `.github` directory **must be at the root of the workspace** where the GitHub repository was cloned. If the `.github` folder is placed anywhere else, VS Code and Copilot will not detect it and the instructions/prompts will have no effect.
+>
+> ```
+> <repo-root>/          ← workspace root (where you cloned the repo)
+> ├── .github/
+> │   ├── copilot-instructions.md          ← repository-level instructions
+> │   ├── instructions/
+> │   │   └── activities.instructions.md   ← file-specific instructions
+> │   └── prompts/
+> │       └── new-activity.prompt.md       ← reusable prompt files
+> ├── main.py
+> ├── config.json
+> └── ...
+> ```
+
 ## Step 1: Setting Up Custom Instructions
 
 Welcome to **SunVoyage Tours** — a tourism portal where visitors browse activities, flights, and accommodations across Mediterranean destinations. ✈️ 🏖️ 🍽️
@@ -220,7 +235,7 @@ Now let's verify that Copilot actually uses the instructions you just created.
    > ![Static Badge](https://img.shields.io/badge/-Prompt-text?style=social&logo=github%20copilot)
    >
    > ```prompt
-   > How should I format the price for a new activity that costs 50 euros?
+   > What conventions does the project have regarding the city, the money and the title of the activity? 
    > ```
 
 3. Copilot should respond with `€50 / person` — following the convention you established.
@@ -262,7 +277,7 @@ Personal instructions reflect your **individual role and preferences**. They fol
 
 **How to configure (VS Code):**
 
-Open the **Chat Customizations editor** by clicking the **Configure Chat** (gear icon) in the Chat view, or run **Chat: Open Chat Customizations** from the Command Palette (`Ctrl + Shift + P`). From there you can create and manage instruction files scoped to your user profile.
+Open the **Chat Customizations editor** by clicking the **Configure Chat** (gear icon) in the Chat view. From there you can create and manage instruction files scoped to your user profile.
 
 > 📚 Full documentation: [Adding personal custom instructions for GitHub Copilot](https://docs.github.com/en/copilot/how-tos/configure-custom-instructions/add-personal-instructions)
 >
@@ -472,7 +487,7 @@ Now the instruction file exists and automatically applies to any file under `act
    > Update this activity file to follow the project standards and template structure
    > ```
 
-4. Observe how Copilot references **both** the general project instructions (`.github/copilot-instructions.md`) and the activity-specific instructions (`.github/instructions/activities.instructions.md`) in its response references.
+4. Observe how Copilot references **both** the personal instructions (`.github/instructions/water-sport-manager.md`) and the activity-specific instructions (`.github/instructions/activities.instructions.md`) in its response references.
 
 5. Review the proposed changes:
    - The title should now have an emoji
