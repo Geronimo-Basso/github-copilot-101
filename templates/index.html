@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>{{ config.siteName }}</title>
+  <link rel="stylesheet" href="/static/css/style.css" />
+</head>
+<body>
+  <header>
+    <nav>
+      <div class="logo">🌊 {{ config.siteName }}</div>
+      <ul>
+        <li><a href="#activities">Activities</a></li>
+        <li><a href="#flights">Flights</a></li>
+        <li><a href="#accommodations">Accommodations</a></li>
+        <li><a href="#contact">Contact</a></li>
+      </ul>
+    </nav>
+    <div class="hero">
+      <h1>{{ config.tagline }}</h1>
+      <p>Discover amazing destinations and unforgettable experiences across the Mediterranean</p>
+    </div>
+  </header>
+
+  <main>
+    <!-- Activities Section -->
+    <section id="activities">
+      <h2>🎯 Activities &amp; Experiences</h2>
+      <div class="card-grid">
+        {% for activity in config.activities %}
+        <div class="card">
+          <div class="card-icon">{{ activity.image }}</div>
+          <h3>{{ activity.name }}</h3>
+          <span class="badge">{{ activity.category }}</span>
+          <p><strong>📍</strong> {{ activity.location }}</p>
+          <p><strong>⏱️</strong> {{ activity.duration }}</p>
+          <p class="price">{{ activity.price }}</p>
+        </div>
+        {% endfor %}
+      </div>
+    </section>
+
+    <!-- Flights Section -->
+    <section id="flights">
+      <h2>✈️ Flights</h2>
+      <div class="card-grid">
+        {% for flight in config.flights %}
+        <div class="card">
+          <h3>{{ flight.route }}</h3>
+          <p><strong>Airline:</strong> {{ flight.airline }}</p>
+          <p><strong>Duration:</strong> {{ flight.duration }}</p>
+          <p><strong>Frequency:</strong> {{ flight.frequency }}</p>
+          <p class="price">{{ flight.price }}</p>
+        </div>
+        {% endfor %}
+      </div>
+    </section>
+
+    <!-- Accommodations Section -->
+    <section id="accommodations">
+      <h2>🏨 Accommodations</h2>
+      <div class="card-grid">
+        {% for acc in config.accommodations %}
+        <div class="card">
+          <h3>{{ acc.name }}</h3>
+          <span class="badge">{{ acc.type }}</span>
+          <p><strong>📍</strong> {{ acc.location }}</p>
+          <p>{{ acc.rating }}</p>
+          <div class="amenities">
+            {% for amenity in acc.amenities %}
+            <span class="amenity-tag">{{ amenity }}</span>
+            {% endfor %}
+          </div>
+          <p class="price">{{ acc.pricePerNight }} / night</p>
+        </div>
+        {% endfor %}
+      </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact">
+      <h2>📞 Contact Us</h2>
+      <p>📧 {{ config.contact.email }}</p>
+      <p>📱 {{ config.contact.phone }}</p>
+    </section>
+  </main>
+
+  <footer>
+    <p>&copy; 2026 {{ config.siteName }}. All rights reserved.</p>
+  </footer>
+
+  <script src="/static/js/app.js"></script>
+</body>
+</html>

@@ -1,0 +1,105 @@
+{
+  "siteName": "SunVoyage Tours",
+  "tagline": "Your Gateway to Unforgettable Experiences",
+  "contact": {
+    "email": "info@sunvoyage.example.com",
+    "phone": "+34 900 123 456"
+  },
+  "activities": [
+    {
+      "id": "jet-skiing",
+      "name": "Jet Skiing Adventure",
+      "category": "Water Sports",
+      "price": "€75 / person",
+      "duration": "1 hour",
+      "location": "Costa del Sol, Spain",
+      "image": "🚤",
+      "folder": "activities/jet-skiing"
+    },
+    {
+      "id": "kayaking",
+      "name": "Kayaking",
+      "category": "water",
+      "price": "45",
+      "duration": "2h",
+      "location": "Mallorca",
+      "image": "",
+      "folder": "activities/kayaking"
+    },
+    {
+      "id": "sightseeing",
+      "name": "City Sightseeing Tour",
+      "category": "Cultural",
+      "price": "€30 / person",
+      "duration": "3 hours",
+      "location": "Barcelona, Spain",
+      "image": "🏛️",
+      "folder": "activities/sightseeing"
+    },
+    {
+      "id": "restaurant-guide",
+      "name": "Gourmet Restaurant Experience",
+      "category": "Gastronomy",
+      "price": "€120 / person",
+      "duration": "2.5 hours",
+      "location": "Madrid, Spain",
+      "image": "🍽️",
+      "folder": "activities/restaurant-guide"
+    }
+  ],
+  "flights": [
+    {
+      "id": "mad-bcn",
+      "route": "Madrid → Barcelona",
+      "airline": "SunVoyage Air",
+      "price": "€89",
+      "duration": "1h 15m",
+      "frequency": "Daily"
+    },
+    {
+      "id": "lon-mal",
+      "route": "London → Mallorca",
+      "airline": "SunVoyage Air",
+      "price": "€149",
+      "duration": "2h 30m",
+      "frequency": "Mon, Wed, Fri, Sat"
+    },
+    {
+      "id": "par-ibz",
+      "route": "Paris → Ibiza",
+      "airline": "SunVoyage Air",
+      "price": "€129",
+      "duration": "2h 10m",
+      "frequency": "Tue, Thu, Sat, Sun"
+    }
+  ],
+  "accommodations": [
+    {
+      "id": "beach-resort",
+      "name": "SunVoyage Beach Resort",
+      "type": "Resort",
+      "location": "Costa del Sol, Spain",
+      "pricePerNight": "€180",
+      "rating": "⭐⭐⭐⭐⭐",
+      "amenities": ["Pool", "Spa", "Beach Access", "Restaurant"]
+    },
+    {
+      "id": "city-apartment",
+      "name": "Barcelona City Apartment",
+      "type": "Apartment",
+      "location": "Barcelona, Spain",
+      "pricePerNight": "€95",
+      "rating": "⭐⭐⭐⭐",
+      "amenities": ["Kitchen", "WiFi", "Central Location"]
+    },
+    {
+      "id": "mountain-cabin",
+      "name": "Sierra Nevada Mountain Cabin",
+      "type": "Cabin",
+      "location": "Granada, Spain",
+      "pricePerNight": "€110",
+      "rating": "⭐⭐⭐⭐",
+      "amenities": ["Fireplace", "Mountain Views", "Hiking Trails"]
+    }
+  ]
+}
