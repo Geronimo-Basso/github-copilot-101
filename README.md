@@ -13,7 +13,7 @@ Today's goal is to learn how to **customize GitHub Copilot's behavior** so its o
 
 By the end of this lab you will have set up custom instructions at every scope, fixed non-compliant content, built prompt files to automate repetitive tasks, and created a skill that levels up your website's JavaScript and security — all on a FastAPI tourism website served by Uvicorn. 🌊
 
-> ⚠️ **Important:** All customization files created during this lab — `copilot-instructions.md`, instruction files (`*.instructions.md`), and prompt files (`*.prompt.md`) — must live inside the **`.github`** directory, and this `.github` directory **must be at the root of the workspace** where the GitHub repository was cloned. If the `.github` folder is placed anywhere else, VS Code and Copilot will not detect it and the instructions/prompts will have no effect.
+> ⚠️ **Important:** All customization files created during this lab — `copilot-instructions.md`, instruction files (`*.instructions.md`), prompt files (`*.prompt.md`), and skills (SKILL.md) — must live inside the **`.github`** directory, and this `.github` directory **must be at the root of the workspace** where the GitHub repository was cloned. If the `.github` folder is placed anywhere else, VS Code and Copilot will not detect it and the instructions/prompts will have no effect.
 >
 > ```
 > <repo-root>/          ← workspace root (where you cloned the repo)
@@ -21,10 +21,14 @@ By the end of this lab you will have set up custom instructions at every scope, 
 > │   ├── copilot-instructions.md          ← repository-level instructions
 > │   ├── instructions/
 > │   │   └── activities.instructions.md   ← file-specific instructions
-> │   └── prompts/
-> │       └── new-activity.prompt.md       ← reusable prompt files
+> │   ├── prompts/
+> │   │   └── new-activity.prompt.md       ← reusable prompt files
+> │   └── skills/
+> │       └── web-enhancer/
+> │           └── SKILL.md                 ← domain expertise skills
 > ├── main.py
 > ├── config.json
+> ├── README.md
 > └── ...
 > ```
 
@@ -771,7 +775,7 @@ Create a **new prompt file** that automates one of these workflows:
 
 - The prompt file must be in `.github/prompts/` with the `.prompt.md` extension
 - It must include `agent: agent`, a `description`, and an `argument-hint` in the frontmatter
-- It must reference `config.json` so Copilot understands the data format
+- It must reference `config.json` so Copilot creates the new activity that will appear in the website
 - It should guide Copilot to follow the same formatting conventions (euro prices, location format, etc.)
 
 > 💡 **Tip:** You can use **Agent Mode** to generate the prompt file itself — just like we did in Step 4! Try asking Copilot:
@@ -851,7 +855,7 @@ A skill is a `SKILL.md` file that gives Copilot domain expertise. While instruct
 
 > 💡 **Tip:** Keep skills focused on one area. A small, specific skill is more useful than a massive generic one.
 
-> ❕ **Important:** The `description` field in the frontmatter is **the most critical part** of a skill. Copilot reads it to decide whether to load the skill for a given task. If the description doesn't mention the right keywords (e.g., "JavaScript", "security", "web"), Copilot won't know when to apply it — and your skill will be ignored. Make the description specific and include the key terms that match the kind of tasks you want the skill to activate for.
+❕ **Important:** The `description` field in the frontmatter is **the most critical part** of a skill. Copilot reads it to decide whether to load the skill for a given task. If the description doesn't mention the right keywords (e.g., "JavaScript", "security", "web"), Copilot won't know when to apply it — and your skill will be ignored. Make the description specific and include the key terms that match the kind of tasks you want the skill to activate for.
 
 See the [VS Code Docs: Agent Skills](https://code.visualstudio.com/docs/copilot/customization/agent-skills) page for more information.
 
@@ -937,6 +941,8 @@ Now let's ask Copilot to fix them — with the skill guiding the output.
    > templates/index.html. Fix any code quality and security issues.
    > ```
 
+> 💡 **Tip:** Drag the files to the chat to give it more context.
+
 3. Review the changes. With the skill active, Copilot should:
    - Replace `var` with `const`/`let`
    - Switch from `getElementById`/`getElementsByTagName` to `querySelector`/`querySelectorAll`
@@ -1020,22 +1026,24 @@ Create a new skill called that specializes in creating activities. In this exerc
    - 
    - 
    -  
+   - If any of these fields are missing from the user's request, do NOT proceed. Instead, ask the user to provide the missing values before creating anything.
+   - 
    ```
 
 3. Save the file.
 
-   > 🪧 **Note:** See how the skill links to `new-activity.prompt.md`? This tells Copilot to read the prompt file's workflow (create folder, create README, update config.json) while also applying the Mallorca-specific rules. You don't have to repeat the full workflow — just reference it and add your overrides.
+   > 🪧 **Note:** See how the skill links to `new-activity.prompt.md`? This tells Copilot to read the prompt file's workflow (create folder, create README, update config.json) while also applying the activity-specific rules. You don't have to repeat the full workflow — just reference it and add your overrides.
 
-### Activity: Test the Mallorca skill 🏝️
+### Activity: Test the Activity Creation skill 🏝️
 
 1. Open **Copilot Chat** in **Agent** mode.
 
-2. Ask Copilot to create a new Mallorca activity:
+2. Ask Copilot to create a new activity:
 
    > ![Static Badge](https://img.shields.io/badge/-Prompt-text?style=social&logo=github%20copilot)
    >
    > ```prompt
-   > Create a new parasailing activity in Mallorca
+   > Create a new scuba-diving activity
    > ```
 
 3. Observe how Copilot behaves:
@@ -1070,7 +1078,7 @@ You've completed **Lab 02 — Copilot Custom Instructions**! Here's a recap of w
 | **Step 4** | Created a reusable prompt file to automate new activity creation |
 | **Step 5** | Designed your own prompt file for flights, accommodations, or packages |
 | **Step 6** | Built a web-coder skill to improve JavaScript quality and security |
-| **Step 7** | Created a skill that references prompt files to specialize activity creation for Mallorca |
+| **Step 7** | Created a skill that references prompt files to specialize activity creation |
 
 ### Key Takeaways
 
