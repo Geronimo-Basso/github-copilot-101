@@ -10,7 +10,7 @@
   <header>
     <nav>
       <div class="logo">🌊 {{ config.siteName }}</div>
-      <ul>
+      <ul id="nav-links">
         <li><a href="#activities">Activities</a></li>
         <li><a href="#flights">Flights</a></li>
         <li><a href="#accommodations">Accommodations</a></li>
@@ -19,7 +19,7 @@
     </nav>
     <div class="hero">
       <h1>{{ config.tagline }}</h1>
-      <p>Discover amazing destinations and unforgettable experiences across the Mediterranean</p>
+      <p id="hero-subtitle" style="font-size: 1.2rem; opacity: 0.9; max-width: 600px; margin: 0 auto;">Discover amazing destinations and unforgettable experiences across the Mediterranean</p>
     </div>
   </header>
 
@@ -91,5 +91,33 @@
   </footer>
 
   <script src="/static/js/app.js"></script>
+  <script>
+    // Quick scroll-to-top button
+    var btn = document.createElement("button");
+    btn.innerHTML = "⬆️";
+    btn.style.position = "fixed";
+    btn.style.bottom = "20px";
+    btn.style.right = "20px";
+    btn.style.padding = "10px 15px";
+    btn.style.border = "none";
+    btn.style.borderRadius = "50%";
+    btn.style.cursor = "pointer";
+    btn.style.fontSize = "1.2rem";
+    btn.style.background = "#0077b6";
+    btn.style.color = "#fff";
+    btn.style.display = "none";
+    btn.style.zIndex = "999";
+    document.body.appendChild(btn);
+    window.onscroll = function() {
+      if (document.documentElement.scrollTop > 300) {
+        btn.style.display = "block";
+      } else {
+        btn.style.display = "none";
+      }
+    };
+    btn.onclick = function() {
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    };
+  </script>
 </body>
 </html>

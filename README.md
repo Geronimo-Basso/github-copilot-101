@@ -9,8 +9,9 @@ Today's goal is to learn how to **customize GitHub Copilot's behavior** so its o
 - **Custom Instructions** — Give Copilot project-wide, personal, and organization-level context
 - **File-Specific Instructions** — Target conventions to specific files or directories
 - **Prompt Files** — Build reusable slash commands that automate multi-step workflows
+- **Skills** — Package domain expertise so Copilot writes better code in specialized areas
 
-By the end of this lab you will have set up custom instructions at every scope, fixed non-compliant content, and built prompt files to automate repetitive tasks — all on a FastAPI tourism website served by Uvicorn. 🌊
+By the end of this lab you will have set up custom instructions at every scope, fixed non-compliant content, built prompt files to automate repetitive tasks, and created a skill that levels up your website's JavaScript and security — all on a FastAPI tourism website served by Uvicorn. 🌊
 
 > ⚠️ **Important:** All customization files created during this lab — `copilot-instructions.md`, instruction files (`*.instructions.md`), and prompt files (`*.prompt.md`) — must live inside the **`.github`** directory, and this `.github` directory **must be at the root of the workspace** where the GitHub repository was cloned. If the `.github` folder is placed anywhere else, VS Code and Copilot will not detect it and the instructions/prompts will have no effect.
 >
@@ -831,6 +832,232 @@ Add the new flight to the `flights` array in [config.json](../../config.json) fo
 
 ---
 
+## Step 6: Skills — Guided
+
+You've customized how Copilot understands your project and automated content creation. But what about the **quality of the code** it writes? Right now, when Copilot generates JavaScript for the website, it uses generic knowledge. It doesn't know we prefer certain patterns or that we care about security.
+
+That's where **Skills** come in. A skill is a small file of **expert knowledge** that Copilot reads before writing code — like giving it a cheat-sheet from a senior developer.
+
+### 📖 Theory: What are Skills?
+
+A skill is a `SKILL.md` file that gives Copilot domain expertise. While instructions say "follow these rules" and prompts say "do this task", a skill says **"here is how an expert does it — apply this knowledge."**
+
+| Aspect | Details |
+| ------ | ------- |
+| **File name** | `SKILL.md` |
+| **Location** | Inside a folder under `.github/skills/` |
+| **Frontmatter** | `name` and `description` — tells Copilot when to use it |
+| **Content** | Best practices, patterns, and do's/don'ts |
+
+> 💡 **Tip:** Keep skills focused on one area. A small, specific skill is more useful than a massive generic one.
+
+> ❕ **Important:** The `description` field in the frontmatter is **the most critical part** of a skill. Copilot reads it to decide whether to load the skill for a given task. If the description doesn't mention the right keywords (e.g., "JavaScript", "security", "web"), Copilot won't know when to apply it — and your skill will be ignored. Make the description specific and include the key terms that match the kind of tasks you want the skill to activate for.
+
+See the [VS Code Docs: Agent Skills](https://code.visualstudio.com/docs/copilot/customization/agent-skills) page for more information.
+
+### Activity: Create a simple web-enhancer skill 🧑‍💻
+
+We'll build a tiny skill that teaches Copilot two things: **modern JavaScript patterns** and **basic security rules**. This is enough to noticeably improve the code it generates for our website.
+
+1. Create the skill file:
+
+   ```text
+   .github/skills/web-enhancer/SKILL.md
+   ```
+
+2. Add the following content:
+
+   ```markdown
+   ---
+   name: web-enhancer
+   description: 'Best practices for JavaScript and security in web projects. Use when writing or modifying HTML, CSS, or JavaScript code.'
+   ---
+
+   # Web Enhancer Skill
+
+   Apply these rules when writing or modifying frontend code.
+
+   ## JavaScript Rules
+
+   - Use `const` and `let` — never `var`
+   - Use `addEventListener` — never inline `onclick` attributes
+   - Use `querySelector` / `querySelectorAll` for DOM selection
+   - Use `async`/`await` with try/catch for fetch calls
+   - Use template literals instead of string concatenation
+   - Always handle the case where an element might not exist before using it
+
+   ## Security Rules
+
+   - Use `textContent` instead of `innerHTML` when inserting user-provided text
+   - Never use `eval()` or `new Function()` with dynamic strings
+   - Validate and sanitize any user input before using it
+   - Do not store sensitive data in `localStorage`
+
+   ## Do's and Don'ts
+
+   - ✅ Use semantic HTML (`<nav>`, `<main>`, `<section>`, `<article>`)
+   - ✅ Add `loading="lazy"` to images below the fold
+   - ✅ Use `defer` for script tags
+   - ✅ Provide error feedback to the user, not just console logs
+   - ❌ Never insert unsanitized user input into the DOM
+   - ❌ Never use inline styles — use CSS classes
+   - ❌ Never ignore errors from fetch calls
+   ```
+
+3. Save the file.
+
+### Activity: See the skill in action 🚀
+
+Before testing the skill, take a moment to look at the current state of the code. Open `static/js/app.js` and `templates/index.html` and notice these problems — the website works fine, but the code is **full of bad practices**:
+
+| File | Issue | Skill rule violated |
+| ---- | ----- | ------------------- |
+| `app.js` | Uses `var` everywhere | JS: use `const`/`let` |
+| `app.js` | Uses `getElementById` and `getElementsByTagName` | JS: use `querySelector` |
+| `app.js` | Uses `anchors[i].onclick = ...` | JS: use `addEventListener` |
+| `app.js` | Uses string concatenation (`"Loaded " + data.length`) | JS: use template literals |
+| `app.js` | `fetch()` has no error handling (no try/catch, no `.catch()`) | JS: use async/await with try/catch |
+| `app.js` | Sets `innerHTML` with concatenated strings | Security: use `textContent` |
+| `app.js` | Stores `"demo-secret-token-abc123"` in `localStorage` | Security: don't store secrets |
+| `index.html` | Inline styles on the hero subtitle (`style="font-size:..."`) | Don'ts: use CSS classes |
+| `index.html` | Scroll-to-top button created entirely with inline styles | Don'ts: use CSS classes |
+| `index.html` | Uses `btn.onclick = ...` and `window.onscroll = ...` | JS: use `addEventListener` |
+| `index.html` | Script tag at the bottom without `defer` | Do's: use `defer` |
+
+Now let's ask Copilot to fix them — with the skill guiding the output.
+
+1. Open **Copilot Chat** in **Agent** mode.
+
+2. Ask Copilot to clean up the code:
+
+   > ![Static Badge](https://img.shields.io/badge/-Prompt-text?style=social&logo=github%20copilot)
+   >
+   > ```prompt
+   > Review the JavaScript in static/js/app.js and the inline scripts in
+   > templates/index.html. Fix any code quality and security issues.
+   > ```
+
+3. Review the changes. With the skill active, Copilot should:
+   - Replace `var` with `const`/`let`
+   - Switch from `getElementById`/`getElementsByTagName` to `querySelector`/`querySelectorAll`
+   - Replace `onclick`/`onscroll` assignments with `addEventListener`
+   - Use template literals instead of string concatenation
+   - Wrap `fetch()` in `async`/`await` with try/catch
+   - Replace `innerHTML` with `textContent` or safe alternatives
+   - Remove the secret token from `localStorage`
+   - Move inline styles to CSS classes
+   - Add `defer` to the script tag
+
+4. **Accept the changes**, restart the server, and verify everything still works.
+
+   **🎯 Goal: Copilot fixes all the bad practices because the skill provides expert guidance before it modifies code. ✅**
+
+<details>
+<summary>Skill not being applied? 🤷</summary>
+
+- Make sure the file is at exactly `.github/skills/web-enhancer/SKILL.md`.
+- The `description` in the frontmatter must mention keywords like "JavaScript", "web", "HTML" so Copilot knows when to load it.
+- Restart VS Code if the skill was just created.
+
+</details>
+
+---
+
+## Step 7: Skills That Use Prompt Files — Your Turn! 🏆
+
+You've seen how a skill improves code quality. Now let's discover another powerful feature: **skills can reference other files** — including the prompt files you already created.
+
+This means you can build a skill that combines expert knowledge with an automated workflow. Think of it as giving Copilot both the **"what to do"** (the prompt) and the **"how to do it well"** (the skill rules).
+
+### 📖 Theory: Skills Can Reference Files
+
+Inside a `SKILL.md` file, you can link to other files in your workspace using regular markdown links — just like prompt files do. When Copilot loads the skill, it also reads the linked files for additional context.
+
+This is powerful because it lets you **reuse** the prompt files you already built. For example, a skill can say: "When creating activities, follow the workflow in the new-activity prompt file, but also apply these extra rules."
+
+### Your Task
+
+Create a new skill called that specializes in creating activities. In this exercice you should:
+
+- Reference the `/new-activity` prompt file you created in Step 4 (so Copilot knows the workflow)
+- Override the location so that it's **always** `Mallorca, Spain`
+- Override the category so that it's **always** `WaterSport`
+- Always ask the user about the **price**, **name** and **duration** (don't assume)
+- Let Copilot fill out the rest based on the prompt-file
+
+### How to do it
+
+1. Create the skill file:
+
+   ```text
+   .github/skills/activity-creation/SKILL.md
+   ```
+
+2. Add the following content:
+
+   ```markdown
+   ---
+   name: ##
+   description: '##. Use when ##'
+   ---
+
+   # Activities Skill
+
+   When creating new activities, follow the workflow in
+   [enter-prompt-file-name](enter-path-to-prompt-file) but apply
+   these additional rules:
+
+   ## Location
+
+   - 
+   
+   ## Category
+
+   -   
+
+   ## Required Information
+
+   - 
+   - 
+   -  
+   ```
+
+3. Save the file.
+
+   > 🪧 **Note:** See how the skill links to `new-activity.prompt.md`? This tells Copilot to read the prompt file's workflow (create folder, create README, update config.json) while also applying the Mallorca-specific rules. You don't have to repeat the full workflow — just reference it and add your overrides.
+
+### Activity: Test the Mallorca skill 🏝️
+
+1. Open **Copilot Chat** in **Agent** mode.
+
+2. Ask Copilot to create a new Mallorca activity:
+
+   > ![Static Badge](https://img.shields.io/badge/-Prompt-text?style=social&logo=github%20copilot)
+   >
+   > ```prompt
+   > Create a new parasailing activity in Mallorca
+   > ```
+
+3. Observe how Copilot behaves:
+   - It should **not ask** for the location (the skill says it's always Mallorca, Spain)
+   - It should **not ask** for the category (the skill says it's always WaterSport)
+   - It should follow the same workflow from the prompt file (create folder, README, update config.json)
+
+4. **Restart the server** and verify the new activity appears on the website with everything as you specified.
+
+   **🎯 Goal: The skill combines the new-activity prompt workflow with specific rules — showing that skills can reference and extend existing files. ✅**
+
+<details>
+<summary>Skill not working? 🤷</summary>
+
+- Make sure the `description` mentions "creating" and "activity" — Copilot uses the description to decide when to load it.
+- Check that the relative path to the prompt file is correct: `../../prompts/new-activity.prompt.md` ().
+- Restart VS Code if the skill was just created.
+
+</details>
+
+---
+
 ## Congratulations! 🎉
 
 You've completed **Lab 02 — Copilot Custom Instructions**! Here's a recap of what you learned:
@@ -842,15 +1069,18 @@ You've completed **Lab 02 — Copilot Custom Instructions**! Here's a recap of w
 | **Step 3** | Independently fixed the sightseeing activity using the same approach |
 | **Step 4** | Created a reusable prompt file to automate new activity creation |
 | **Step 5** | Designed your own prompt file for flights, accommodations, or packages |
+| **Step 6** | Built a web-coder skill to improve JavaScript quality and security |
+| **Step 7** | Created a skill that references prompt files to specialize activity creation for Mallorca |
 
 ### Key Takeaways
 
 - **Custom instructions** eliminate repetitive guidance — set them once, benefit every time.
 - **Three levels** let you tailor Copilot at the organization, repository, and personal scope.
+- **Priority order**: Personal > Repository > Organization — personal preferences always win.
 - **File-specific instructions** (`*.instructions.md`) target only the files that need them using glob patterns.
 - **Prompt files** (`*.prompt.md`) package multi-step workflows into reusable slash commands.
-- **Priority order**: Personal > Repository > Organization — personal preferences always win.
-- **Agent Mode** can create the instruction and prompt files themselves — let Copilot do the heavy lifting!
+- **Skills** (`SKILL.md`) give Copilot deep domain expertise so it writes higher-quality, specialized code.
+- **Agent Mode** can create the instruction files, prompt files, and skills themselves — let Copilot do the heavy lifting!
 
 ### What's Next?
 
