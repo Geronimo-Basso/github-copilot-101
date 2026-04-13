@@ -6,13 +6,12 @@ Teach **GitHub Copilot** to speak your project's language. Custom instructions, 
 
 - [What You'll Learn](#what-youll-learn)
 - [Step 1: Setting Up Custom Instructions](#step-1-setting-up-custom-instructions)
-- [Step 2: Path-Specific Custom Instructions — Guided Fix](#step-2-path-specific-custom-instructions--guided-fix)
-- [Step 3: Path-Specific Custom Instructions — Your Turn! 🏆](#step-3-path-specific-custom-instructions--your-turn-)
-- [Step 4: Agent Instructions](#step-4-agent-instructions)
-- [Step 5: Reusable Prompt Files — Guided](#step-5-reusable-prompt-files--guided)
-- [Step 6: Reusable Prompt Files — Your Turn! 🏆](#step-6-reusable-prompt-files--your-turn-)
-- [Step 7: Skills — Guided](#step-7-skills--guided)
-- [Step 8: Skills That Use Prompt Files — Your Turn! 🏆](#step-8-skills-that-use-prompt-files--your-turn-)
+- [Step 2: Path-Specific Custom Instructions](#step-2-path-specific-custom-instructions)
+- [Step 3: Agent Instructions](#step-3-agent-instructions)
+- [Step 4: Reusable Prompt Files — Guided](#step-4-reusable-prompt-files--guided)
+- [Step 5: Reusable Prompt Files — Your Turn! 🏆](#step-5-reusable-prompt-files--your-turn-)
+- [Step 6: Skills — Guided](#step-6-skills--guided)
+- [Step 7: Skills That Use Prompt Files — Your Turn! 🏆](#step-7-skills-that-use-prompt-files--your-turn-)
 - [Congratulations! 🎉](#congratulations-)
 
 ## What You'll Learn
@@ -364,7 +363,7 @@ All three instruction sets are sent to Copilot, but **personal instructions take
 
 ---
 
-## Step 2: Path-Specific Custom Instructions — Guided Fix
+## Step 2: Path-Specific Custom Instructions
 
 Great work setting up repository-wide custom instructions! Now let's tackle a more targeted scenario.
 
@@ -552,13 +551,9 @@ The README is fixed, but the `config.json` entry for kayaking is still non-compl
 
 </details>
 
----
-
-## Step 3: Path-Specific Custom Instructions — Your Turn! 🏆
+### Activity: Fix the sightseeing activity — Your Turn! 🏆
 
 You've successfully fixed the kayaking activity with Copilot's help. Now it's time to take the training wheels off and apply what you've learned on your own!
-
-### The Scenario
 
 Open `activities/sightseeing/README.md`. This file has a **different set of problems** from the kayaking file:
 
@@ -568,7 +563,7 @@ Open `activities/sightseeing/README.md`. This file has a **different set of prob
 - The `"⚠️ Safety Information"` and `"📝 Requirements"` sections are completely missing
 - The `"📞 Booking"` section uses a different email and is missing the phone number
 
-### Your Task
+**Your Task:**
 
 1. Use Copilot in **Agent** mode to **update the sightseeing activity** so it matches the activity template structure — just like you did with the kayaking file.
 
@@ -581,7 +576,7 @@ Open `activities/sightseeing/README.md`. This file has a **different set of prob
 <details>
 <summary>Hints 💡</summary>
 
-- The instruction file you created in Step 2 uses `applyTo: "activities/**/*.md"` — it already applies to the sightseeing file too! You can reuse the same Copilot prompt.
+- The instruction file you created uses `applyTo: "activities/**/*.md"` — it already applies to the sightseeing file too! You can reuse the same Copilot prompt.
 - Open the sightseeing file first, then ask Copilot in **Agent** mode:
 
   > ![Static Badge](https://img.shields.io/badge/-Prompt-text?style=social&logo=github%20copilot)
@@ -610,7 +605,7 @@ After fixing, the sightseeing `README.md` should have:
 
 ---
 
-## Step 4: Agent Instructions
+## Step 3: Agent Instructions
 
 Now that you've set up repository-wide and path-specific custom instructions, let's complete the trio with **agent instructions** — the third type of repository custom instruction.
 
@@ -727,7 +722,7 @@ Let's create an agent instructions file so that any AI agent working on the SunV
 
 ---
 
-## Step 5: Reusable Prompt Files — Guided
+## Step 4: Reusable Prompt Files — Guided
 
 Now that all existing activities follow a consistent structure, you want to make it easy to **create new activities** without manually setting up every file. This is a perfect scenario for a **prompt file** — a reusable slash command that automates repetitive workflows.
 
@@ -875,7 +870,7 @@ Let's use **Agent Mode** to help us write the prompt file itself — prompt file
 
 ---
 
-## Step 6: Reusable Prompt Files — Your Turn! 🏆
+## Step 5: Reusable Prompt Files — Your Turn! 🏆
 
 You've automated activity creation with a prompt file. Now think about what **other repetitive tasks** in this project could benefit from the same approach.
 
@@ -956,7 +951,7 @@ Add the new flight to the `flights` array in [config.json](../../config.json) fo
 
 ---
 
-## Step 7: Skills — Guided
+## Step 6: Skills — Guided
 
 You've customized how Copilot understands your project and automated content creation. But what about the **quality of the code** it writes? Right now, when Copilot generates JavaScript for the website, it uses generic knowledge. It doesn't know we prefer certain patterns or that we care about security.
 
@@ -1089,7 +1084,7 @@ Now let's ask Copilot to fix them — with the skill guiding the output.
 
 ---
 
-## Step 8: Skills That Use Prompt Files — Your Turn! 🏆
+## Step 7: Skills That Use Prompt Files — Your Turn! 🏆
 
 You've seen how a skill improves code quality. Now let's discover another powerful feature: **skills can reference other files** — including the prompt files you already created.
 
@@ -1193,13 +1188,12 @@ You've completed **Lab 02 — Copilot Custom Instructions**! Here's a recap of w
 | Step | What You Did |
 | ---- | ------------ |
 | **Step 1** | Set up custom instructions: organization (review), repository-wide custom instructions (hands-on), and personal (theory) |
-| **Step 2** | Built path-specific custom instructions and used them to fix the kayaking activity |
-| **Step 3** | Independently fixed the sightseeing activity using the same approach |
-| **Step 4** | Created agent instructions (`AGENTS.md`) to onboard AI agents to the repo |
-| **Step 5** | Created a reusable prompt file to automate new activity creation |
-| **Step 6** | Designed your own prompt file for flights, accommodations, or packages |
-| **Step 7** | Built a web-coder skill to improve JavaScript quality and security |
-| **Step 8** | Created a skill that references prompt files to specialize activity creation |
+| **Step 2** | Built path-specific custom instructions and used them to fix the kayaking and sightseeing activities |
+| **Step 3** | Created agent instructions (`AGENTS.md`) to onboard AI agents to the repo |
+| **Step 4** | Created a reusable prompt file to automate new activity creation |
+| **Step 5** | Designed your own prompt file for flights, accommodations, or packages |
+| **Step 6** | Built a web-coder skill to improve JavaScript quality and security |
+| **Step 7** | Created a skill that references prompt files to specialize activity creation |
 
 ### Key Takeaways
 
