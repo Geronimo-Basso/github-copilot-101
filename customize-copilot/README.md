@@ -162,6 +162,13 @@ When multiple types apply to a request, Copilot uses **all of them** — they co
 
 > 💡 **Tip:** You'll explore all three types during this lab. We'll start with repository-wide custom instructions now, then cover path-specific custom instructions in **Step 2**, and agent instructions after **Step 3**.
 
+> 🪧 **Note:** Although we don't recommend it, you can **enable or disable custom instructions** at any time. This only affects your own use of Copilot Chat — not other users.
+>
+> To toggle them in VS Code:
+> 1. Open the Settings editor (`Cmd+,` on Mac / `Ctrl+,` on Linux/Windows).
+> 2. Type `instruction file` in the search box.
+> 3. Select or clear the checkbox under **Code Generation: Use Instruction Files**.
+
 ---
 
 #### Repository-Wide Custom Instructions
