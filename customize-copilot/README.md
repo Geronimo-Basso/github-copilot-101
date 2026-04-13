@@ -329,8 +329,6 @@ Personal instructions reflect your **individual role and preferences**. They fol
 Open the **Chat Customizations editor** by clicking the **Configure Chat** (gear icon) in the Chat view. From there you can create and manage instruction files scoped to your user profile.
 
 > 📚 Full documentation: [Adding personal custom instructions for GitHub Copilot](https://docs.github.com/en/copilot/how-tos/configure-custom-instructions/add-personal-instructions)
->
-> 📚 VS Code customization overview: [Customize AI in Visual Studio Code](https://aka.ms/vscode-ghcp-custom-instructions)
 
 ### Activity: Add personal instructions in VS Code 🧑‍💻
 
