@@ -7,9 +7,10 @@ Teach **GitHub Copilot** to speak your project's language. Custom instructions, 
 - [What You'll Learn](#what-youll-learn)
 - [Step 1: Setting Up Custom Instructions](#step-1-setting-up-custom-instructions)
 - [Step 2: Path-Specific Custom Instructions](#step-2-path-specific-custom-instructions)
-- [Step 3: Agent Instructions](#step-3-agent-instructions)
-- [Step 4: Reusable Prompt Files](#step-4-reusable-prompt-files)
-- [Step 5: Skills](#step-5-skills)
+- [Step 3: Multiple Path-Specific Instructions](#step-3-multiple-path-specific-instructions)
+- [Step 4: Agent Instructions](#step-4-agent-instructions)
+- [Step 5: Reusable Prompt Files](#step-5-reusable-prompt-files)
+- [Step 6: Skills](#step-6-skills)
 - [Congratulations! 🎉](#congratulations-)
 
 ## What You'll Learn
@@ -603,7 +604,134 @@ After fixing, the sightseeing `README.md` should have:
 
 ---
 
-## Step 3: Agent Instructions
+## Step 3: Multiple Path-Specific Instructions
+
+In Step 2 you created instructions targeting `activities/**/*.md`. But path-specific instructions aren't limited to one file — you can create **multiple instruction files**, each targeting different parts of your codebase with different rules.
+
+The SunVoyage Tours website has JavaScript and HTML code that works, but doesn't follow modern best practices. Let's create a second set of path-specific instructions to enforce frontend code quality.
+
+### Activity: Identify the frontend code issues 🔍
+
+1. Open `static/js/app.js` and review the code. You should notice several bad practices:
+
+   | Issue | What you see | Best practice |
+   | ----- | ------------ | ------------- |
+   | `var` everywhere | `var navLinks = ...` | Use `const` or `let` |
+   | Old DOM methods | `getElementById`, `getElementsByTagName` | Use `querySelector` / `querySelectorAll` |
+   | Inline event handlers | `anchors[i].onclick = ...` | Use `addEventListener` |
+   | String concatenation | `"Loaded " + data.length` | Use template literals |
+   | No error handling | `fetch("/api/activities").then(...)` | Use `async`/`await` with `try`/`catch` |
+   | `innerHTML` with strings | `hero.innerHTML = "<em>..."` | Use `textContent` or safe alternatives |
+   | Secret in `localStorage` | `"demo-secret-token-abc123"` | Never store secrets client-side |
+
+2. Now open `templates/index.html` and look for inline styles and scripts — these also violate modern frontend conventions.
+
+### Activity: Create frontend-specific instructions with Copilot 🤖
+
+1. Open **Copilot Chat** in **Agent** mode.
+
+2. Ask Copilot to create a new instruction file for frontend code:
+
+   > ![Static Badge](https://img.shields.io/badge/-Prompt-text?style=social&logo=github%20copilot)
+   >
+   > ```prompt
+   > Create a file at .github/instructions/frontend.instructions.md
+   > It should have an applyTo frontmatter targeting "static/**/*.js,static/**/*.css,templates/**/*.html"
+   > and contain rules for frontend code:
+   > - Use const and let, never var
+   > - Use addEventListener, never inline onclick
+   > - Use querySelector/querySelectorAll for DOM selection
+   > - Use async/await with try/catch for fetch calls
+   > - Use template literals instead of string concatenation
+   > - Use textContent instead of innerHTML for user-provided text
+   > - Never store secrets in localStorage
+   > - Never use inline styles, use CSS classes instead
+   > - Use defer for script tags
+   > - Use semantic HTML elements
+   > ```
+
+3. Review the file Copilot creates. It should have:
+
+   <details>
+   <summary>Expected structure 📄</summary>
+
+   ```markdown
+   ---
+   applyTo: "static/**/*.js,static/**/*.css,templates/**/*.html"
+   ---
+
+   # Frontend Code Guidelines
+
+   ## JavaScript
+
+   - Use `const` and `let` — never `var`
+   - Use `addEventListener` — never inline `onclick` attributes
+   - Use `querySelector` / `querySelectorAll` for DOM selection
+   - Use `async`/`await` with `try`/`catch` for fetch calls
+   - Use template literals instead of string concatenation
+   - Always handle the case where an element might not exist
+
+   ## Security
+
+   - Use `textContent` instead of `innerHTML` when inserting text
+   - Never use `eval()` or `new Function()` with dynamic strings
+   - Never store secrets or tokens in `localStorage`
+
+   ## HTML & CSS
+
+   - Use semantic HTML elements (`<nav>`, `<main>`, `<section>`)
+   - Never use inline styles — use CSS classes
+   - Use `defer` for script tags
+   - Add `loading="lazy"` to images below the fold
+   ```
+
+   </details>
+
+4. **Accept the changes** and save the file.
+
+### Activity: Fix the frontend code 🔧
+
+Now let's use the new instructions to clean up the JavaScript.
+
+1. Open `static/js/app.js` in VS Code.
+
+2. In **Agent** mode, ask Copilot to fix the code:
+
+   > ![Static Badge](https://img.shields.io/badge/-Prompt-text?style=social&logo=github%20copilot)
+   >
+   > ```prompt
+   > Review and fix static/js/app.js and the inline scripts in
+   > templates/index.html. Fix any code quality and security issues.
+   > ```
+
+   > 💡 **Tip:** Drag the files into the chat to give Copilot more context.
+
+3. Review the changes. Copilot should:
+   - Replace `var` with `const`/`let`
+   - Switch to `querySelector`/`querySelectorAll`
+   - Replace `onclick` with `addEventListener`
+   - Use template literals
+   - Wrap `fetch()` in `async`/`await` with `try`/`catch`
+   - Replace `innerHTML` with `textContent` or safe alternatives
+   - Remove the secret token from `localStorage`
+   - Move inline styles to CSS classes
+   - Add `defer` to script tags
+
+4. **Accept the changes**, restart the server, and verify everything still works.
+
+5. Check the **References** in Copilot's response — you should see `.github/instructions/frontend.instructions.md` listed, confirming the new path-specific instructions were applied.
+
+   > 🪧 **Note:** You now have **two** path-specific instruction files working simultaneously:
+   > - `activities.instructions.md` → targets `activities/**/*.md`
+   > - `frontend.instructions.md` → targets `static/**/*.js`, `static/**/*.css`, `templates/**/*.html`
+   >
+   > Each applies only when Copilot works on files matching its glob pattern. The repository-wide `copilot-instructions.md` still applies to everything on top of these.
+
+   **🎯 Goal: The frontend code follows modern JavaScript best practices and security rules, enforced by a second set of path-specific instructions. ✅**
+
+---
+
+## Step 4: Agent Instructions
 
 Now that you've set up repository-wide and path-specific custom instructions, let's complete the trio with **agent instructions** — the third type of repository custom instruction.
 
@@ -720,7 +848,7 @@ Let's create an agent instructions file so that any AI agent working on the SunV
 
 ---
 
-## Step 4: Reusable Prompt Files
+## Step 5: Reusable Prompt Files
 
 Now that all existing activities follow a consistent structure, you want to make it easy to **create new activities** without manually setting up every file. This is a perfect scenario for a **prompt file** — a reusable slash command that automates repetitive workflows.
 
@@ -941,7 +1069,7 @@ Add the new flight to the `flights` array in [config.json](../../config.json) fo
 
 ---
 
-## Step 5: Skills
+## Step 6: Skills
 
 You've customized how Copilot understands your project and automated content creation. But what about the **quality of the code** it writes? Right now, when Copilot generates JavaScript for the website, it uses generic knowledge. It doesn't know we prefer certain patterns or that we care about security.
 
@@ -1084,7 +1212,7 @@ You've seen how a skill improves code quality. Now let's combine a skill with th
 
 Create a new skill that specializes in creating activities. You should:
 
-- Reference the `/new-activity` prompt file you created in Step 4 (so Copilot knows the workflow)
+- Reference the `/new-activity` prompt file you created in Step 5 (so Copilot knows the workflow)
 - Override the location so that it's **always** `Mallorca, Spain`
 - Override the category so that it's **always** `WaterSport`
 - Always ask the user about the **price**, **name** and **duration** (don't assume)
@@ -1169,9 +1297,10 @@ You've completed **Lab 02 — Copilot Custom Instructions**! Here's a recap of w
 | ---- | ------------ |
 | **Step 1** | Set up custom instructions: organization (review), repository-wide custom instructions (hands-on), and personal (theory) |
 | **Step 2** | Built path-specific custom instructions and used them to fix the kayaking and sightseeing activities |
-| **Step 3** | Created agent instructions (`AGENTS.md`) to onboard AI agents to the repo |
-| **Step 4** | Created reusable prompt files to automate activity, flight, and accommodation creation |
-| **Step 5** | Built skills to improve JavaScript quality and created a skill that references prompt files |
+| **Step 3** | Created a second set of path-specific instructions for frontend code and fixed JavaScript/HTML quality issues |
+| **Step 4** | Created agent instructions (`AGENTS.md`) to onboard AI agents to the repo |
+| **Step 5** | Created reusable prompt files to automate activity, flight, and accommodation creation |
+| **Step 6** | Built skills to improve JavaScript quality and created a skill that references prompt files |
 
 ### Key Takeaways
 
