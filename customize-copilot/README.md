@@ -8,10 +8,9 @@ Teach **GitHub Copilot** to speak your project's language. Custom instructions, 
 - [Step 1: Setting Up Custom Instructions](#step-1-setting-up-custom-instructions)
 - [Step 2: Path-Specific Custom Instructions](#step-2-path-specific-custom-instructions)
 - [Step 3: Agent Instructions](#step-3-agent-instructions)
-- [Step 4: Reusable Prompt Files — Guided](#step-4-reusable-prompt-files--guided)
-- [Step 5: Reusable Prompt Files — Your Turn! 🏆](#step-5-reusable-prompt-files--your-turn-)
-- [Step 6: Skills — Guided](#step-6-skills--guided)
-- [Step 7: Skills That Use Prompt Files — Your Turn! 🏆](#step-7-skills-that-use-prompt-files--your-turn-)
+- [Step 4: Reusable Prompt Files](#step-4-reusable-prompt-files)
+- [Step 5: Skills — Guided](#step-5-skills--guided)
+- [Step 6: Skills That Use Prompt Files — Your Turn! 🏆](#step-6-skills-that-use-prompt-files--your-turn-)
 - [Congratulations! 🎉](#congratulations-)
 
 ## What You'll Learn
@@ -722,7 +721,7 @@ Let's create an agent instructions file so that any AI agent working on the SunV
 
 ---
 
-## Step 4: Reusable Prompt Files — Guided
+## Step 4: Reusable Prompt Files
 
 Now that all existing activities follow a consistent structure, you want to make it easy to **create new activities** without manually setting up every file. This is a perfect scenario for a **prompt file** — a reusable slash command that automates repetitive workflows.
 
@@ -868,17 +867,9 @@ Let's use **Agent Mode** to help us write the prompt file itself — prompt file
 
 **🎯 Goal: A single slash command generates a fully compliant new activity — folder, README, and config entry — in seconds. ✅**
 
----
+### Activity: Create a prompt file for flights or accommodations ✈️
 
-## Step 5: Reusable Prompt Files — Your Turn! 🏆
-
-You've automated activity creation with a prompt file. Now think about what **other repetitive tasks** in this project could benefit from the same approach.
-
-### The Scenario
-
-The SunVoyage Tours website also manages **flights** and **accommodations** through `config.json`. Adding new entries requires knowing the exact JSON structure, field names, and formatting conventions. This is error-prone and slow when done manually.
-
-### Your Task
+The SunVoyage Tours website also manages **flights** and **accommodations** through `config.json`. Adding new entries requires knowing the exact JSON structure, field names, and formatting conventions — a perfect use case for another prompt file.
 
 Create a **new prompt file** that automates one of these workflows:
 
@@ -886,14 +877,14 @@ Create a **new prompt file** that automates one of these workflows:
 2. **Option B:** Create a `/new-accommodation` prompt that adds a new accommodation listing to `config.json`
 3. **Option C (Advanced):** Create a `/travel-package` prompt that bundles a flight + accommodation + activity into a special package deal and adds it as a new section in `config.json` and the website
 
-### Requirements
+**Requirements:**
 
 - The prompt file must be in `.github/prompts/` with the `.prompt.md` extension
 - It must include `agent: agent`, a `description`, and an `argument-hint` in the frontmatter
-- It must reference `config.json` so Copilot creates the new activity that will appear in the website
+- It must reference `config.json` so Copilot creates the new entry that will appear in the website
 - It should guide Copilot to follow the same formatting conventions (euro prices, location format, etc.)
 
-> 💡 **Tip:** You can use **Agent Mode** to generate the prompt file itself — just like we did in Step 4! Try asking Copilot:
+> 💡 **Tip:** You can use **Agent Mode** to generate the prompt file itself — just like we did above! Try asking Copilot:
 >
 > ![Static Badge](https://img.shields.io/badge/-Prompt-text?style=social&logo=github%20copilot)
 >
@@ -951,7 +942,7 @@ Add the new flight to the `flights` array in [config.json](../../config.json) fo
 
 ---
 
-## Step 6: Skills — Guided
+## Step 5: Skills — Guided
 
 You've customized how Copilot understands your project and automated content creation. But what about the **quality of the code** it writes? Right now, when Copilot generates JavaScript for the website, it uses generic knowledge. It doesn't know we prefer certain patterns or that we care about security.
 
@@ -1084,7 +1075,7 @@ Now let's ask Copilot to fix them — with the skill guiding the output.
 
 ---
 
-## Step 7: Skills That Use Prompt Files — Your Turn! 🏆
+## Step 6: Skills That Use Prompt Files — Your Turn! 🏆
 
 You've seen how a skill improves code quality. Now let's discover another powerful feature: **skills can reference other files** — including the prompt files you already created.
 
@@ -1190,10 +1181,9 @@ You've completed **Lab 02 — Copilot Custom Instructions**! Here's a recap of w
 | **Step 1** | Set up custom instructions: organization (review), repository-wide custom instructions (hands-on), and personal (theory) |
 | **Step 2** | Built path-specific custom instructions and used them to fix the kayaking and sightseeing activities |
 | **Step 3** | Created agent instructions (`AGENTS.md`) to onboard AI agents to the repo |
-| **Step 4** | Created a reusable prompt file to automate new activity creation |
-| **Step 5** | Designed your own prompt file for flights, accommodations, or packages |
-| **Step 6** | Built a web-coder skill to improve JavaScript quality and security |
-| **Step 7** | Created a skill that references prompt files to specialize activity creation |
+| **Step 4** | Created reusable prompt files to automate activity, flight, and accommodation creation |
+| **Step 5** | Built a web-coder skill to improve JavaScript quality and security |
+| **Step 6** | Created a skill that references prompt files to specialize activity creation |
 
 ### Key Takeaways
 
