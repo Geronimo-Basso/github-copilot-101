@@ -26,6 +26,7 @@ By the end of this lab you will have set up custom instructions at every scope, 
 > │   └── skills/
 > │       └── web-enhancer/
 > │           └── SKILL.md                 ← domain expertise skills
+> ├── AGENTS.md                            ← agent instructions
 > ├── main.py
 > ├── config.json
 > ├── README.md
@@ -149,7 +150,23 @@ Since organization instructions require **admin access to a GitHub organization*
 
 ### 📖 Repository-Level Instructions
 
-Repository instructions live inside the repo in a file called **`.github/copilot-instructions.md`**. They are automatically attached to every Copilot Chat request made in the context of that repository.
+Repository custom instructions allow you to give Copilot repo-specific guidance. Copilot supports **three types** of repository custom instructions, each designed for a different use case:
+
+| Type | File(s) | Scope | Use case |
+| ---- | ------- | ----- | -------- |
+| **Repository-wide** | `.github/copilot-instructions.md` | All requests in the repo | Project conventions, tech stack, coding standards |
+| **Path-specific** | `.github/instructions/NAME.instructions.md` | Requests involving files that match a glob pattern | Targeted rules for specific files or directories |
+| **Agent instructions** | `AGENTS.md` (anywhere in the repo) | Used by AI agents (Copilot cloud agent, etc.) | Onboarding context for autonomous agents working on your repo |
+
+When multiple types apply to a request, Copilot uses **all of them** — they complement each other. Path-specific instructions combine with repository-wide instructions when both match.
+
+> 💡 **Tip:** You'll explore all three types during this lab. We'll start with repository-wide instructions now, cover path-specific instructions in **Step 2**, and agent instructions right after testing.
+
+---
+
+#### Repository-Wide Custom Instructions
+
+Repository-wide instructions live inside the repo in a file called **`.github/copilot-instructions.md`**. They are automatically attached to every Copilot Chat request made in the context of that repository.
 
 **How to configure:**
 
@@ -157,7 +174,7 @@ Repository instructions live inside the repo in a file called **`.github/copilot
 2. Write natural-language instructions describing your project.
 3. Save — Copilot picks it up immediately.
 
-> 📚 Full documentation: [Adding repository custom instructions for GitHub Copilot](https://docs.github.com/en/copilot/how-tos/configure-custom-instructions/add-repository-instructions?tool=visualstudio)
+> 📚 Full documentation: [Adding repository custom instructions for GitHub Copilot](https://docs.github.com/en/copilot/how-tos/configure-custom-instructions/add-repository-instructions?tool=vscode)
 
 > 💡 **Tip:** Keep instructions short and focused on the **"how"** of the project: purpose, folder structure, coding standards, key tools, expected formats, etc.
 
@@ -267,6 +284,119 @@ Now let's verify that Copilot actually uses the instructions you just created.
    Copilot should now mention FastAPI, Uvicorn, activities, flights, and accommodations — language it wouldn't have known without your instructions. That alone is a huge productivity boost for onboarding teammates!
 
    **🎯 Goal: Copilot references your instruction file and follows the project conventions. ✅**
+
+---
+
+### 📖 Agent Instructions (`AGENTS.md`)
+
+Agent instructions are a special type of repository custom instruction designed for **AI agents** — like Copilot cloud agent (formerly known as coding agent) — that work autonomously on your codebase.
+
+Unlike `copilot-instructions.md` (which targets chat interactions), agent instructions help an AI agent that's **seeing your repo for the first time** understand how to navigate, build, test, and contribute effectively — like onboarding documentation for an autonomous team member.
+
+**Key details:**
+
+| Property | Value |
+| -------- | ----- |
+| **File name** | `AGENTS.md` |
+| **Location** | Anywhere in the repository (the nearest one in the directory tree takes precedence) |
+| **Scope** | Used by AI agents when working autonomously on the repo |
+| **Alternatives** | `CLAUDE.md` or `GEMINI.md` in the repo root (for model-specific agents) |
+
+**What to include:**
+
+- A summary of what the repository does and the tech stack
+- How to build, test, lint, and run the project
+- Key architectural decisions and project layout
+- Common pitfalls, workarounds, and validation steps
+- Any CI/CD requirements the agent should be aware of
+
+> 📚 Full specification: [agentsmd/agents.md repository](https://github.com/agentsmd/agents.md)
+>
+> 📚 Full documentation: [Adding repository custom instructions](https://docs.github.com/en/copilot/how-tos/configure-custom-instructions/add-repository-instructions?tool=vscode#creating-repository-wide-custom-instructions-1)
+
+### Activity: Create an `AGENTS.md` file 🤖🧭
+
+Let's create an agent instructions file so that any AI agent working on the SunVoyage Tours project can hit the ground running.
+
+1. Open **Copilot Chat** in **Agent** mode.
+
+2. Ask Copilot to generate the agent instructions:
+
+   > ![Static Badge](https://img.shields.io/badge/-Prompt-text?style=social&logo=github%20copilot)
+   >
+   > ```prompt
+   > Create an AGENTS.md file in the root of this repository.
+   > It should help an AI agent that has never seen this project before
+   > understand how to work on it effectively.
+   > Include:
+   > - What the project does (tourism portal, FastAPI/Uvicorn)
+   > - How to install dependencies and run the dev server
+   > - The project structure (main.py, config.json, templates/, activities/, static/)
+   > - Coding conventions (price format, location format, duration format, Title Case categories)
+   > - How to add a new activity (create a folder in activities/ with a README.md following templates/activity-template.md)
+   > - Any validation steps (check that main.py runs without errors)
+   > ```
+
+3. Review the file Copilot creates. It should contain practical, actionable guidance — not just a description. A good `AGENTS.md` reads like a checklist an agent can follow.
+
+   <details>
+   <summary>Expected content 📄</summary>
+
+   ```markdown
+   # AGENTS.md — SunVoyage Tours
+
+   ## Project Overview
+   SunVoyage Tours is a tourism portal built with Python/FastAPI, served via Uvicorn.
+   Visitors browse activities, flights, and accommodations across Mediterranean destinations.
+
+   ## Quick Start
+   ```bash
+   pip install -r requirements.txt
+   python main.py
+   ```
+   The server starts at http://127.0.0.1:8000.
+
+   ## Project Structure
+   - `main.py` — FastAPI entry point
+   - `config.json` — Central data source (activities, flights, accommodations)
+   - `templates/` — Jinja2 HTML templates
+   - `templates/activity-template.md` — Template for new activity READMEs
+   - `activities/` — Each activity has its own folder with a `README.md`
+   - `static/` — CSS and JavaScript files
+
+   ## Conventions
+   - Prices: `€XX / person` or `€XX / night`
+   - Locations: `City, Country`
+   - Durations: full words (`2 hours`, not `2h`)
+   - Categories: Title Case (`Water Sports`)
+   - Activity READMEs must follow `templates/activity-template.md`
+   - Professional, customer-friendly tone
+
+   ## Adding a New Activity
+   1. Create a new folder under `activities/` (e.g., `activities/sailing/`)
+   2. Add a `README.md` following the template in `templates/activity-template.md`
+   3. Register the activity in `config.json`
+   4. Run `python main.py` to verify it loads correctly
+
+   ## Validation
+   - Run `python main.py` and verify no errors on startup
+   - Visit the homepage and confirm the new activity appears
+   ```
+
+   </details>
+
+4. **Accept the changes** and save the file in the repository root.
+
+5. **Discuss:** How is `AGENTS.md` different from `.github/copilot-instructions.md`?
+
+   <details>
+   <summary>Answer 💡</summary>
+
+   `copilot-instructions.md` is automatically attached to **every Copilot Chat request** and focuses on coding conventions and response formatting. `AGENTS.md` is used by **autonomous AI agents** (like Copilot cloud agent) and focuses on practical onboarding: how to build, test, navigate, and validate changes. Think of `copilot-instructions.md` as a style guide and `AGENTS.md` as a getting-started guide for a new developer.
+
+   </details>
+
+   **🎯 Goal: You now have agent instructions that help AI agents work effectively on your repo. ✅**
 
 ---
 
@@ -1072,7 +1202,7 @@ You've completed **Lab 02 — Copilot Custom Instructions**! Here's a recap of w
 
 | Step | What You Did |
 | ---- | ------------ |
-| **Step 1** | Set up custom instructions at all three levels: organization (review), repository (hands-on), and personal (hands-on) |
+| **Step 1** | Set up custom instructions at all three levels: organization (review), repository (hands-on), agent instructions (hands-on), and personal (hands-on) |
 | **Step 2** | Built file-specific instructions and used them to fix the kayaking activity |
 | **Step 3** | Independently fixed the sightseeing activity using the same approach |
 | **Step 4** | Created a reusable prompt file to automate new activity creation |
@@ -1084,6 +1214,7 @@ You've completed **Lab 02 — Copilot Custom Instructions**! Here's a recap of w
 
 - **Custom instructions** eliminate repetitive guidance — set them once, benefit every time.
 - **Three levels** let you tailor Copilot at the organization, repository, and personal scope.
+- **Three types of repository instructions**: repository-wide (`copilot-instructions.md`), path-specific (`*.instructions.md`), and agent instructions (`AGENTS.md`).
 - **Priority order**: Personal > Repository > Organization — personal preferences always win.
 - **File-specific instructions** (`*.instructions.md`) target only the files that need them using glob patterns.
 - **Prompt files** (`*.prompt.md`) package multi-step workflows into reusable slash commands.
