@@ -47,27 +47,7 @@ By the end of this lab you will have set up custom instructions at every scope, 
 
 Welcome to **SunVoyage Tours** — a tourism portal where visitors browse activities, flights, and accommodations across Mediterranean destinations. ✈️ 🏖️ 🍽️
 
-In this step we'll set up the development environment, explore the website, and configure Copilot custom instructions at the **organization**, **repository**, and **personal** levels.
-
-### 📖 Theory: What are Custom Instructions?
-
-Custom instructions are **natural-language rules** you provide to Copilot. Once configured, they are automatically included in every request, ensuring consistent, context-aware responses across your entire workflow.
-
-Think of them as a cheat-sheet you hand to a new team member on day one — except Copilot reads it every single time, never forgets, and never drifts from the guidelines.
-
-Copilot supports instructions at **three scope levels**. Each one is designed for a different audience.
-
-| Level | Scope | Set by | Where it lives |
-| ----- | ----- | ------ | -------------- |
-| **🥉 Organization** | All members across all repos | Organization owners | GitHub.com → Org Settings → Copilot → Custom Instructions |
-| **🥈 Repository** | Anyone working in this repo | Any contributor | `.github/copilot-instructions.md` in the repo |
-| **🥇 Personal** | Your conversations everywhere | You | GitHub.com personal settings |
-
-When multiple levels apply, Copilot uses **all of them** but respects this priority (highest first): **Personal > Repository > Organization**. Non-conflicting rules from every level are combined; when they do conflict, the higher-priority level wins.
-
-> 💡 **Tip:** Avoid contradictions between levels. If you are getting unexpected results, review which instructions are active at each scope.
-
----
+In this step we'll set up the development environment, explore the website, and learn about Copilot custom instructions at the **organization**, **repository**, and **personal** levels.
 
 ### Activity: Explore the project with Copilot 🔍
 
@@ -136,6 +116,26 @@ Before we configure any instructions, let's get the website running and use Copi
    | `templates/activity-template.md` | Markdown template every activity README must follow |
    | `activities/` | One subfolder per activity, each with a `README.md` |
    | `static/` | CSS and JavaScript assets |
+
+---
+
+### 📖 Theory: What are Custom Instructions?
+
+Custom instructions are **natural-language rules** you provide to Copilot. Once configured, they are automatically included in every request, ensuring consistent, context-aware responses across your entire workflow.
+
+Think of them as a cheat-sheet you hand to a new team member on day one — except Copilot reads it every single time, never forgets, and never drifts from the guidelines.
+
+Copilot supports instructions at **three scope levels**. Each one is designed for a different audience.
+
+| Level | Scope | Set by | Where it lives |
+| ----- | ----- | ------ | -------------- |
+| **🥉 Organization** | All members across all repos | Organization owners | GitHub.com → Org Settings → Copilot → Custom Instructions |
+| **🥈 Repository** | Anyone working in this repo | Any contributor | `.github/copilot-instructions.md` in the repo |
+| **🥇 Personal** | Your conversations everywhere | You | GitHub.com personal settings |
+
+When multiple levels apply, Copilot uses **all of them** but respects this priority (highest first): **Personal > Repository > Organization**. Non-conflicting rules from every level are combined; when they do conflict, the higher-priority level wins.
+
+> 💡 **Tip:** Avoid contradictions between levels. If you are getting unexpected results, review which instructions are active at each scope.
 
 ---
 
