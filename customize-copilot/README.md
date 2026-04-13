@@ -329,81 +329,27 @@ Now let's verify that Copilot actually uses the instructions you just created.
 
 ### 📖 Personal-Level Instructions
 
-Personal instructions reflect your **individual role and preferences**. They follow you across all projects and are not committed to any repository.
+Personal instructions reflect your **individual role and preferences**. They follow you across all projects and are not committed to any repository. They are configured through **GitHub.com**, not inside the IDE.
 
-**How to configure (GitHub.com):**
+**How to configure:**
 
 1. Open [Copilot Chat](https://github.com/copilot).
 2. Click your profile picture → **Personal instructions**.
 3. Type your preferences and click **Save**.
 
-**How to configure (VS Code):**
-
-Open the **Chat Customizations editor** by clicking the **Configure Chat** (gear icon) in the Chat view. From there you can create and manage instruction files scoped to your user profile.
+When multiple levels apply, Copilot uses **all of them** but respects this priority (highest first): **Personal > Repository > Organization**. Non-conflicting rules from every level are combined; when they do conflict, the higher-priority level wins.
 
 > 📚 Full documentation: [Adding personal custom instructions for GitHub Copilot](https://docs.github.com/en/copilot/how-tos/configure-custom-instructions/add-personal-instructions)
-
-### Activity: Add personal instructions in VS Code 🧑‍💻
-
-In this exercise, imagine you are the **Water Sports product manager** at SunVoyage Tours. Your focus is water-based activities and you want Copilot to always prioritize that area.
-
-1. In the **Copilot Chat** panel, click the **Configure Chat** (gear icon ⚙️) at the top to open the **Chat Customizations editor**.
-
-2. In the **Instructions** section, click the dropdown arrow (▾) next to **Generate Instructions** and select **New Instructions (User)**.
-
-   > 🪧 **Note:** Selecting **User** scope means this instruction applies to all your projects — not just this repo. That's what makes it a *personal* instruction.
-
-3. When prompted to enter a file name, type:
-
-   ```text
-   water-sports-manager
-   ```
-
-4. Select the **`.copilot\instructions`** directory (e.g., `C:\Users\<your-username>\.copilot\instructions`).
-
-5. VS Code will create and open a new `.instructions.md` file with placeholder text. You need to update two things:
-
-   - **Replace the `description` placeholder** in the frontmatter with:
-
-     ```text
-     This instruction file should be used whenever the user asks for activities, suggestions, or content related to water sports. It ensures that the agent prioritizes water-based experiences and includes necessary safety warnings.
-     ```
-
-   - **Replace the placeholder content** (below the `---` frontmatter closing) with:
-
-     ```text
-     I am the Water Sports product manager. When listing, suggesting, or creating activities, always prioritize water-based experiences (jet skiing, kayaking, surfing, diving, sailing). Include detailed safety warnings for any water-related activity. When generating content in Spanish, use European Spanish.
-     ```
-
-6. Save the file.
-
-### Activity: Test personal instructions 🏄
-
-1. Open **Copilot Chat** in **Agent** mode and ask:
-
-   > ![Static Badge](https://img.shields.io/badge/-Prompt-text?style=social&logo=github%20copilot)
-   >
-   > ```prompt
-   > Suggest three new activities we could add to the SunVoyage Tours website
-   > ```
-
-2. Observe that Copilot's suggestions **lean toward water activities** — surfing, diving, snorkeling, sailing — reflecting your personal instruction.
-
-3. Compare this with what a colleague without your personal instructions would see. They would get a more balanced mix of activity types, because the repository instructions don't prioritize any category.
-
-   > 🪧 **Note:** Personal instructions are stored locally in your VS Code settings and are **not** committed to the repository. They follow you across all projects.
-
-   **🎯 Goal: Copilot recommends mostly water-based activities because your personal instructions take highest priority. ✅**
 
 ---
 
 ### Priority Recap
 
-Now that all three levels are configured, let's make sure the priority model is clear:
+Now that you understand the three instruction levels, let's make sure the priority model is clear:
 
-| Priority | Level | What you configured |
-| -------- | ----- | ------------------- |
-| 🥇 Highest | **Personal** | Water Sports product manager focus |
+| Priority | Level | Example |
+| -------- | ----- | ------- |
+| 🥇 Highest | **Personal** | Your individual role, language preferences, focus areas |
 | 🥈 Medium | **Repository** | Project structure, conventions, formatting rules |
 | 🥉 Lowest | **Organization** | Company-wide standards (euros, GDPR, professional tone) |
 
@@ -420,7 +366,7 @@ All three instruction sets are sent to Copilot, but **personal instructions take
 
 ## Step 2: Path-Specific Custom Instructions — Guided Fix
 
-Great work setting up instructions at all three levels! Now let's tackle a more targeted scenario.
+Great work setting up repository-wide custom instructions! Now let's tackle a more targeted scenario.
 
 🐛 **THERE IS A PROBLEM IN THE ACTIVITY FILES** 🐛
 
@@ -547,7 +493,7 @@ Now the instruction file exists and automatically applies to any file under `act
    > Update this activity file to follow the project standards and template structure
    > ```
 
-4. Observe how Copilot references **both** the personal instructions (`.github/instructions/water-sport-manager.md`) and the activity-specific instructions (`.github/instructions/activities.instructions.md`) in its response references.
+4. Observe how Copilot references the activity-specific instructions (`.github/instructions/activities.instructions.md`) in its response references.
 
 5. Review the proposed changes:
    - The title should now have an emoji
@@ -1244,7 +1190,7 @@ You've completed **Lab 02 — Copilot Custom Instructions**! Here's a recap of w
 
 | Step | What You Did |
 | ---- | ------------ |
-| **Step 1** | Set up custom instructions: organization (review), repository-wide custom instructions (hands-on), and personal (hands-on) |
+| **Step 1** | Set up custom instructions: organization (review), repository-wide custom instructions (hands-on), and personal (theory) |
 | **Step 2** | Built path-specific custom instructions and used them to fix the kayaking activity |
 | **Step 3** | Independently fixed the sightseeing activity using the same approach |
 | **Step 4** | Created agent instructions (`AGENTS.md`) to onboard AI agents to the repo |
