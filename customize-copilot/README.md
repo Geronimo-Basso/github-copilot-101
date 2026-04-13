@@ -67,25 +67,45 @@ Before we configure any instructions, let's get the website running and use Copi
 
 2. In the left sidebar, click the **Extensions** tab and verify that the **GitHub Copilot** and **Python** extensions are installed and enabled.
 
-3. Open a terminal and install the dependencies:
+3. Open a terminal and create a virtual environment:
+
+   ```bash
+   python3 -m venv venv
+   ```
+
+4. Activate the virtual environment:
+
+   - **macOS / Linux:**
+
+     ```bash
+     source venv/bin/activate
+     ```
+
+   - **Windows:**
+
+     ```bash
+     venv\Scripts\activate
+     ```
+
+5. Install the dependencies:
 
    ```bash
    pip install -r requirements.txt
    ```
 
-4. Start the development server:
+6. Start the development server:
 
    ```bash
    python main.py
    ```
 
-5. Open your browser at **http://127.0.0.1:8000** and explore the SunVoyage Tours website.
+7. Open your browser at **http://127.0.0.1:8000** and explore the SunVoyage Tours website.
 
    > ❕ **Important:** Keep the server running throughout the lab so you can see live changes.
 
-6. Take a moment to look at the website. You should see four activity cards, three flight routes, and three accommodation listings. Notice that some cards look polished while others are clearly missing information — **we will fix that later!**
+8. Take a moment to look at the website. You should see four activity cards, three flight routes, and three accommodation listings. Notice that some cards look polished while others are clearly missing information — **we will fix that later!**
 
-7. Now let's ask Copilot about the project. Open the **Copilot Chat** panel and make sure you are in **Ask Mode**.
+9. Now let's ask Copilot about the project. Open the **Copilot Chat** panel and make sure you are in **Ask Mode**.
 
    > ![Static Badge](https://img.shields.io/badge/-Prompt-text?style=social&logo=github%20copilot)
    >
@@ -96,7 +116,7 @@ Before we configure any instructions, let's get the website running and use Copi
 
    > 💡 **Tip:** You can drag files (like `main.py` or `config.json`) into the chat panel to give Copilot more context. You can also use `#codebase` to let Copilot search the whole repo.
 
-8. Browse the project files to verify Copilot's explanation:
+10. Browse the project files to verify Copilot's explanation:
 
    | Path | Purpose |
    | ---- | ------- |
