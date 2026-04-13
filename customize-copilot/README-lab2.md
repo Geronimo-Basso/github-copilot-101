@@ -107,17 +107,6 @@ Before we configure any instructions, let's get the website running and use Copi
 
    > 💡 **Tip:** You can drag files (like `main.py` or `config.json`) into the chat panel to give Copilot more context. You can also use `#codebase` to let Copilot search the whole repo.
 
-10. Browse the project files to verify Copilot's explanation:
-
-   | Path | Purpose |
-   | ---- | ------- |
-   | `main.py` | FastAPI application served with Uvicorn |
-   | `config.json` | Central configuration — activities, flights, accommodations |
-   | `templates/index.html` | Jinja2 HTML template for the main page |
-   | `templates/activity-template.md` | Markdown template every activity README must follow |
-   | `activities/` | One subfolder per activity, each with a `README.md` |
-   | `static/` | CSS and JavaScript assets |
-
 ---
 
 ### 📖 Theory: What are Custom Instructions?
@@ -288,7 +277,7 @@ Instead of creating the file manually, let's use **Agent Mode** to do the heavy 
 
 Now let's verify that Copilot actually uses the instructions you just created.
 
-1. Make sure you are in **Agent** mode in Copilot Chat.
+1. Open **Copilot Chat**.
 
 2. Ask Copilot a question that exercises your conventions:
 
@@ -481,7 +470,7 @@ Now the instruction file exists and automatically applies to any file under `act
 
 1. Open `activities/kayaking/README.md` in VS Code.
 
-2. Open **Copilot Chat** and make sure you are in **Agent** mode.
+2. Open **Copilot Chat** and make sure you are in **Agent** or **Edit** mode.
 
 3. With the kayaking file open, ask Copilot to fix it:
 
@@ -511,7 +500,7 @@ The README is fixed, but the `config.json` entry for kayaking is still non-compl
 
 1. Open `config.json` and find the `kayaking` entry.
 
-2. In **Agent** mode, ask Copilot:
+2. In **Agent** or **Edit** mode, ask Copilot:
 
    > ![Static Badge](https://img.shields.io/badge/-Prompt-text?style=social&logo=github%20copilot)
    >
@@ -564,7 +553,7 @@ Open `activities/sightseeing/README.md`. This file has a **different set of prob
 
 **Your Task:**
 
-1. Use Copilot in **Agent** mode to **update the sightseeing activity** so it matches the activity template structure — just like you did with the kayaking file.
+1. Use Copilot in **Agent** or **Edit** mode to **update the sightseeing activity** so it matches the activity template structure — just like you did with the kayaking file.
 
 2. Think about whether the existing `.github/instructions/activities.instructions.md` file already covers this case, or if you need to adjust it.
 
@@ -576,7 +565,7 @@ Open `activities/sightseeing/README.md`. This file has a **different set of prob
 <summary>Hints 💡</summary>
 
 - The instruction file you created uses `applyTo: "activities/**/*.md"` — it already applies to the sightseeing file too! You can reuse the same Copilot prompt.
-- Open the sightseeing file first, then ask Copilot in **Agent** mode:
+- Open the sightseeing file first, then ask Copilot in **Agent** or **Edit** mode:
 
   > ![Static Badge](https://img.shields.io/badge/-Prompt-text?style=social&logo=github%20copilot)
   >
@@ -695,7 +684,7 @@ Now let's use the new instructions to clean up the JavaScript.
 
 1. Open `static/js/app.js` in VS Code.
 
-2. In **Agent** mode, ask Copilot to fix the code:
+2. In **Agent** or **Edit** mode, ask Copilot to fix the code:
 
    > ![Static Badge](https://img.shields.io/badge/-Prompt-text?style=social&logo=github%20copilot)
    >
@@ -737,9 +726,9 @@ Now that you've set up repository-wide and path-specific custom instructions, le
 
 ### 📖 Theory: What are Agent Instructions?
 
-Agent instructions are designed for **AI agents** — like Copilot cloud agent (formerly known as coding agent) — that work autonomously on your codebase.
+Agent instructions are designed for AI agents that work autonomously on your codebase.
 
-Unlike `copilot-instructions.md` (which targets chat interactions), agent instructions help an AI agent that's **seeing your repo for the first time** understand how to navigate, build, test, and contribute effectively — like onboarding documentation for an autonomous team member.
+Unlike `copilot-instructions.md` (which targets all Copilot chat interactions), agent instructions help an AI agent that's understand how to navigate, build, test, and contribute effectively — like onboarding documentation for an autonomous team member.
 
 **Key details:**
 
@@ -748,7 +737,6 @@ Unlike `copilot-instructions.md` (which targets chat interactions), agent instru
 | **File name** | `AGENTS.md` |
 | **Location** | Anywhere in the repository (the nearest one in the directory tree takes precedence) |
 | **Scope** | Used by AI agents when working autonomously on the repo |
-| **Alternatives** | `CLAUDE.md` or `GEMINI.md` in the repo root (for model-specific agents) |
 
 **What to include:**
 
