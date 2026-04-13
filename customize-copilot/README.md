@@ -2,6 +2,19 @@
 
 Teach **GitHub Copilot** to speak your project's language. Custom instructions, path-specific rules, and reusable prompt files turn Copilot from a generic assistant into a domain expert that knows your conventions by heart.
 
+## Table of Contents
+
+- [What You'll Learn](#what-youll-learn)
+- [Step 1: Setting Up Custom Instructions](#step-1-setting-up-custom-instructions)
+- [Step 2: Path-Specific Custom Instructions — Guided Fix](#step-2-path-specific-custom-instructions--guided-fix)
+- [Step 3: Path-Specific Custom Instructions — Your Turn! 🏆](#step-3-path-specific-custom-instructions--your-turn-)
+- [Step 4: Agent Instructions](#step-4-agent-instructions)
+- [Step 5: Reusable Prompt Files — Guided](#step-5-reusable-prompt-files--guided)
+- [Step 6: Reusable Prompt Files — Your Turn! 🏆](#step-6-reusable-prompt-files--your-turn-)
+- [Step 7: Skills — Guided](#step-7-skills--guided)
+- [Step 8: Skills That Use Prompt Files — Your Turn! 🏆](#step-8-skills-that-use-prompt-files--your-turn-)
+- [Congratulations! 🎉](#congratulations-)
+
 ## What You'll Learn
 
 Today's goal is to learn how to **customize GitHub Copilot's behavior** so its output consistently matches your project standards — without repeating the same guidance in every prompt.
