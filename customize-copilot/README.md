@@ -9,8 +9,7 @@ Teach **GitHub Copilot** to speak your project's language. Custom instructions, 
 - [Step 2: Path-Specific Custom Instructions](#step-2-path-specific-custom-instructions)
 - [Step 3: Agent Instructions](#step-3-agent-instructions)
 - [Step 4: Reusable Prompt Files](#step-4-reusable-prompt-files)
-- [Step 5: Skills — Guided](#step-5-skills--guided)
-- [Step 6: Skills That Use Prompt Files — Your Turn! 🏆](#step-6-skills-that-use-prompt-files--your-turn-)
+- [Step 5: Skills](#step-5-skills)
 - [Congratulations! 🎉](#congratulations-)
 
 ## What You'll Learn
@@ -942,7 +941,7 @@ Add the new flight to the `flights` array in [config.json](../../config.json) fo
 
 ---
 
-## Step 5: Skills — Guided
+## Step 5: Skills
 
 You've customized how Copilot understands your project and automated content creation. But what about the **quality of the code** it writes? Right now, when Copilot generates JavaScript for the website, it uses generic knowledge. It doesn't know we prefer certain patterns or that we care about security.
 
@@ -965,9 +964,15 @@ A skill is a `SKILL.md` file that gives Copilot domain expertise. While instruct
 
 See the [VS Code Docs: Agent Skills](https://code.visualstudio.com/docs/copilot/customization/agent-skills) page for more information.
 
-### Activity: Create a simple web-enhancer skill 🧑‍💻
+#### Skills Can Reference Files
 
-We'll build a tiny skill that teaches Copilot two things: **modern JavaScript patterns** and **basic security rules**. This is enough to noticeably improve the code it generates for our website.
+Inside a `SKILL.md` file, you can link to other files in your workspace using regular markdown links — just like prompt files do. When Copilot loads the skill, it also reads the linked files for additional context.
+
+This is powerful because it lets you **reuse** the prompt files you already built. For example, a skill can say: "When creating activities, follow the workflow in the new-activity prompt file, but also apply these extra rules."
+
+### Activity: Create a web-enhancer skill 🧑‍💻
+
+We'll build a skill that teaches Copilot two things: **modern JavaScript patterns** and **basic security rules**. This is enough to noticeably improve the code it generates for our website.
 
 1. Create the skill file:
 
@@ -1073,31 +1078,19 @@ Now let's ask Copilot to fix them — with the skill guiding the output.
 
 </details>
 
----
+### Activity: Create a skill that references prompt files 🏝️
 
-## Step 6: Skills That Use Prompt Files — Your Turn! 🏆
+You've seen how a skill improves code quality. Now let's combine a skill with the prompt files you already created.
 
-You've seen how a skill improves code quality. Now let's discover another powerful feature: **skills can reference other files** — including the prompt files you already created.
-
-This means you can build a skill that combines expert knowledge with an automated workflow. Think of it as giving Copilot both the **"what to do"** (the prompt) and the **"how to do it well"** (the skill rules).
-
-### 📖 Theory: Skills Can Reference Files
-
-Inside a `SKILL.md` file, you can link to other files in your workspace using regular markdown links — just like prompt files do. When Copilot loads the skill, it also reads the linked files for additional context.
-
-This is powerful because it lets you **reuse** the prompt files you already built. For example, a skill can say: "When creating activities, follow the workflow in the new-activity prompt file, but also apply these extra rules."
-
-### Your Task
-
-Create a new skill called that specializes in creating activities. In this exercice you should:
+Create a new skill that specializes in creating activities. You should:
 
 - Reference the `/new-activity` prompt file you created in Step 4 (so Copilot knows the workflow)
 - Override the location so that it's **always** `Mallorca, Spain`
 - Override the category so that it's **always** `WaterSport`
 - Always ask the user about the **price**, **name** and **duration** (don't assume)
-- Let Copilot fill out the rest based on the prompt-file
+- Let Copilot fill out the rest based on the prompt file
 
-### How to do it
+**How to do it:**
 
 1. Create the skill file:
 
@@ -1140,11 +1133,7 @@ Create a new skill called that specializes in creating activities. In this exerc
 
    > 🪧 **Note:** See how the skill links to `new-activity.prompt.md`? This tells Copilot to read the prompt file's workflow (create folder, create README, update config.json) while also applying the activity-specific rules. You don't have to repeat the full workflow — just reference it and add your overrides.
 
-### Activity: Test the Activity Creation skill 🏝️
-
-1. Open **Copilot Chat** in **Agent** mode.
-
-2. Ask Copilot to create a new activity:
+4. Test it — open **Copilot Chat** in **Agent** mode and ask:
 
    > ![Static Badge](https://img.shields.io/badge/-Prompt-text?style=social&logo=github%20copilot)
    >
@@ -1152,12 +1141,12 @@ Create a new skill called that specializes in creating activities. In this exerc
    > Create a new scuba-diving activity
    > ```
 
-3. Observe how Copilot behaves:
+5. Observe how Copilot behaves:
    - It should **not ask** for the location (the skill says it's always Mallorca, Spain)
    - It should **not ask** for the category (the skill says it's always WaterSport)
    - It should follow the same workflow from the prompt file (create folder, README, update config.json)
 
-4. **Restart the server** and verify the new activity appears on the website with everything as you specified.
+6. **Restart the server** and verify the new activity appears on the website with everything as you specified.
 
    **🎯 Goal: The skill combines the new-activity prompt workflow with specific rules — showing that skills can reference and extend existing files. ✅**
 
@@ -1182,8 +1171,7 @@ You've completed **Lab 02 — Copilot Custom Instructions**! Here's a recap of w
 | **Step 2** | Built path-specific custom instructions and used them to fix the kayaking and sightseeing activities |
 | **Step 3** | Created agent instructions (`AGENTS.md`) to onboard AI agents to the repo |
 | **Step 4** | Created reusable prompt files to automate activity, flight, and accommodation creation |
-| **Step 5** | Built a web-coder skill to improve JavaScript quality and security |
-| **Step 6** | Created a skill that references prompt files to specialize activity creation |
+| **Step 5** | Built skills to improve JavaScript quality and created a skill that references prompt files |
 
 ### Key Takeaways
 
