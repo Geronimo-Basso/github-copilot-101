@@ -509,6 +509,8 @@ Now the instruction file exists and automatically applies to any file under `act
 
 The README is fixed, but the `config.json` entry for kayaking is still non-compliant. Let's fix that too.
 
+> 🪧 **Note:** The path-specific instructions you created (`activities.instructions.md`) use `applyTo: "activities/**/*.md"`, so they **only** apply to markdown files inside the `activities/` folder — not to `config.json`. However, the **repository-wide custom instructions** (`copilot-instructions.md`) still apply to all requests, so Copilot knows the project conventions. You'll also explicitly describe what needs fixing in your prompt, which gives Copilot all the context it needs.
+
 1. Open `config.json` and find the `kayaking` entry.
 
 2. In **Agent** mode, ask Copilot:
