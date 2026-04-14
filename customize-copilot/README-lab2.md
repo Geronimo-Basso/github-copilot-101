@@ -369,30 +369,6 @@ VS Code looks for `*.instructions.md` files in the `.github/instructions/` direc
 
 > 💡 **Tip:** Instructions should focus on **HOW** a task should be done — the guidelines, standards, and conventions for that particular part of the codebase.
 
-### Activity: Identify the problem 🔍
-
-1. Open the file `activities/kayaking/README.md` and review its content.
-
-2. Now open `templates/activity-template.md` to see the expected structure.
-
-3. Compare the two files. Notice the kayaking file has multiple issues:
-
-   | Issue | Kayaking File | Expected |
-   | ----- | ------------- | -------- |
-   | Title | `# Kayaking in Mallorca` | `# 🛶 Kayaking Adventure` (with emoji) |
-   | Overview section | Missing entirely | Required with 1–2 sentences |
-   | Details table | Plain text (`Duration: 2h`) | Structured markdown table |
-   | Price format | `45 euro` | `€45 / person` |
-   | Duration format | `2h` | `2 hours` |
-   | Location format | `Mallorca` | `Mallorca, Spain` |
-   | What's Included | Missing | Required |
-   | Safety Information | Missing | Required |
-   | Requirements | Missing | Required (separate from "What to bring") |
-   | Booking section | Missing | Required |
-   | Tone | Casual (`trust us!`) | Professional and customer-friendly |
-
-4. Also check the kayaking entry in `config.json` — it has matching issues (empty image, plain `"45"` price, lowercase category `"water"`).
-
 ### Activity: Create activity-specific instructions with Copilot 🤖
 
 Instead of writing the instruction file from scratch, let's ask **Agent Mode** to create it for us — while also teaching it what the file needs to contain.
@@ -470,7 +446,7 @@ Now the instruction file exists and automatically applies to any file under `act
 
 1. Open `activities/kayaking/README.md` in VS Code.
 
-2. Open **Copilot Chat** and make sure you are in **Agent** or **Plan** mode.
+2. Open **Copilot Chat**
 
 3. With the kayaking file open, ask Copilot to fix it:
 
@@ -482,16 +458,6 @@ Now the instruction file exists and automatically applies to any file under `act
 
 4. Observe how Copilot references the activity-specific instructions (`.github/instructions/activities.instructions.md`) in its response references.
 
-5. Review the proposed changes:
-   - The title should now have an emoji
-   - An Overview section should be added
-   - Details should be in a proper markdown table
-   - Prices, durations, and locations should follow the correct format
-   - Missing sections (What's Included, Safety, Requirements, Booking) should be added
-   - The tone should be professional
-
-6. **Accept the changes** and save the file.
-
 ### Activity: Fix the kayaking config entry 🔧
 
 The README is fixed, but the `config.json` entry for kayaking is still non-compliant. Let's fix that too.
@@ -500,7 +466,7 @@ The README is fixed, but the `config.json` entry for kayaking is still non-compl
 
 1. Open `config.json` and find the `kayaking` entry.
 
-2. In **Agent** or **Plan** mode, ask Copilot:
+2. Ask Copilot:
 
    > ![Static Badge](https://img.shields.io/badge/-Prompt-text?style=social&logo=github%20copilot)
    >
@@ -510,22 +476,7 @@ The README is fixed, but the `config.json` entry for kayaking is still non-compl
    > to match the format used by the other activities.
    > ```
 
-3. Verify the updated entry looks similar to:
-
-   ```json
-   {
-     "id": "kayaking",
-     "name": "Kayaking Adventure",
-     "category": "Water Sports",
-     "price": "€45 / person",
-     "duration": "2 hours",
-     "location": "Mallorca, Spain",
-     "image": "🛶",
-     "folder": "activities/kayaking"
-   }
-   ```
-
-4. **Restart the server** (`Ctrl+C` then `python main.py`) and refresh the browser to verify the kayaking card now looks correct on the website.
+3. **Restart the server** (`Ctrl+C` then `python main.py`) and refresh the browser to verify the kayaking card now looks correct on the website.
 
    **🎯 Goal: The kayaking card on the website displays a proper emoji, formatted price, full duration, and correct location. ✅**
 
@@ -553,19 +504,19 @@ Open `activities/sightseeing/README.md`. This file has a **different set of prob
 
 **Your Task:**
 
-1. Use Copilot in **Agent** or **Plan** mode to **update the sightseeing activity** so it matches the activity template structure — just like you did with the kayaking file.
+1. Use Copilot to **update the sightseeing activity** so it matches the activity template structure — just like you did with the kayaking file.
 
 2. Think about whether the existing `.github/instructions/activities.instructions.md` file already covers this case, or if you need to adjust it.
 
 3. Don't forget to verify the result matches the template by comparing it with `activities/jet-skiing/README.md` (a properly formatted example).
 
-4. **Bonus:** Check if the sightseeing entry in `config.json` also needs corrections. Does the pricing format, category casing, or any other field need updating?
+4. Check if the sightseeing entry in `config.json` also needs corrections. Does the pricing format, category casing, or any other field need updating?
 
 <details>
 <summary>Hints 💡</summary>
 
 - The instruction file you created uses `applyTo: "activities/**/*.md"` — it already applies to the sightseeing file too! You can reuse the same Copilot prompt.
-- Open the sightseeing file first, then ask Copilot in **Agent** or **Plan** mode:
+- Open the sightseeing file first, then ask Copilot in **Agent** or **Edit** mode:
 
   > ![Static Badge](https://img.shields.io/badge/-Prompt-text?style=social&logo=github%20copilot)
   >
@@ -617,7 +568,7 @@ The SunVoyage Tours website has JavaScript and HTML code that works, but doesn't
 
 ### Activity: Create frontend-specific instructions with Copilot 🤖
 
-1. Open **Copilot Chat** in **Agent** mode.
+1. Open **Copilot Chat**
 
 2. Ask Copilot to create a new instruction file for frontend code:
 
@@ -684,7 +635,7 @@ Now let's use the new instructions to clean up the JavaScript.
 
 1. Open `static/js/app.js` in VS Code.
 
-2. In **Agent** or **Plan** mode, ask Copilot to fix the code:
+2. In **Agent** or **Edit** mode, ask Copilot to fix the code:
 
    > ![Static Badge](https://img.shields.io/badge/-Prompt-text?style=social&logo=github%20copilot)
    >
@@ -1300,10 +1251,3 @@ You've completed **Lab 02 — Copilot Custom Instructions**! Here's a recap of w
 - **Prompt files** (`*.prompt.md`) package multi-step workflows into reusable slash commands.
 - **Skills** (`SKILL.md`) give Copilot deep domain expertise so it writes higher-quality, specialized code.
 - **Agent Mode** can create the instruction files, prompt files, and skills themselves — let Copilot do the heavy lifting!
-
-### What's Next?
-
-- Explore the [Customization Library](https://docs.github.com/en/copilot/tutorials/customization-library) for more instruction examples
-- Try creating instructions for your own projects
-- Experiment with combining multiple instruction files for different areas of your codebase
-- Share your prompt files with your team to standardize common workflows
