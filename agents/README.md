@@ -1,6 +1,6 @@
 # Lab 03 — GitHub Copilot Agent Mode
 
-Drive **GitHub Copilot's Agent** built-in agent through a real multi-file change with terminal access and tests, choose the right **Permission level** for the risk at hand, ship **a small toolbox of custom agents** (a planner, a reviewer, and a test author) to see different patterns in action, and extend the agent with a **Model Context Protocol (MCP)** server you build yourself.
+Drive **GitHub Copilot's** built-in agent through a real multi-file change with terminal access and tests, choose the right **Permission level** for the risk at hand, ship **a small toolbox of custom agents** (a planner, a reviewer, and a test author) to see different patterns in action, and extend the agent with a **Model Context Protocol (MCP)** server you build yourself.
 
 ## Table of Contents
 
@@ -70,7 +70,6 @@ Get the boring stuff out of the way before the clock starts.
    node --version
    ```
 
-   If this errors, no problem — skip the consume half. The required create half is pure Python.
 
 > ✅ **You should now see:** an active `.venv`, `pip list` showing `mcp`, `pytest`, `fastapi`, and either a Node version string or "command not found" (both are fine).
 
@@ -107,7 +106,7 @@ Permission levels control how much the agent can do **without asking you**. Ther
 | **Bypass Approvals** | All tool calls auto-approved. Agent auto-retries on errors. | Fast but blind — no chance to stop a bad command. |
 | **Autopilot (Preview)** | Bypass + the agent answers its own clarifying questions instead of stopping to ask. | Fastest, most autonomous, hardest to course-correct mid-loop. |
 
-Rule of thumb: **Default for any task you can't `git reset` out of**. Bypass when the change is contained and you're watching. Autopilot when you have a sandbox and a coffee.
+Rule of thumb: **Default for any task you can't `git reset` out of**. Bypass when the change is contained and you're watching. 
 
 ### 1.3 Custom agents
 
