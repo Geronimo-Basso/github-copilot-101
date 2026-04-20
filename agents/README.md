@@ -13,7 +13,7 @@ Drive **GitHub Copilot's** built-in agent through a real multi-file change with 
   - [1.4 Model Context Protocol (MCP)](#14-model-context-protocol-mcp)
 - [Part 2 — Hands-on](#part-2--hands-on)
   - [Exercise A — Agent loop in practice](#exercise-a--agent-loop-in-practice)
-  - [Exercise B — Permission levels](#exercise-b--permission-levels)
+  - [Exercise B — Permission levels (read-through)](#exercise-b--permission-levels-read-through)
   - [Exercise C — Build a custom-agent toolbox](#exercise-c--build-a-custom-agent-toolbox)
     - [C.1 — Plan-first scaffolder with handoff](#c1--plan-first-scaffolder-with-handoff)
     - [C.2 — Read-only code reviewer](#c2--read-only-code-reviewer)
@@ -58,13 +58,25 @@ Get the boring stuff out of the way before the clock starts.
    pip install -r agents/requirements.txt
    ```
 
-4. **Confirm Agent Mode is available.** Open Copilot Chat, click the chat input's mode picker, and check that **Agent** is in the list. If it isn't, your org admin has disabled `chat.agent.enabled` — fix that before continuing.
+4. **Run the app to confirm it boots.** From the workspace root, start the FastAPI server and open the frontend:
 
-5. **Confirm `chat.mcp.discovery.enabled` is on.** The repo ships a `.vscode/settings.json` that already sets this. If you opened the workspace and accepted the workspace-trust prompt, you're good.
+   ```bash
+   # Start the API (leave running in its own terminal)
+   uvicorn agents.backend.app:app --reload --port 8000
+
+   # In a second terminal, sanity-check the API
+   curl http://127.0.0.1:8000/activities
+   ```
+
+   Then open `agents/frontend/index.html` in your browser (or right-click → **Open with Live Server** in VS Code) — it talks to the API on `127.0.0.1:8000`. Stop the server with `Ctrl+C` when you're done; you can restart it any time with the same `uvicorn` command.
+
+5. **Confirm Agent Mode is available.** Open Copilot Chat, click the chat input's mode picker, and check that **Agent** is in the list. If it isn't, your org admin has disabled `chat.agent.enabled` — fix that before continuing.
+
+6. **Confirm `chat.mcp.discovery.enabled` is on.** The repo ships a `.vscode/settings.json` that already sets this. If you opened the workspace and accepted the workspace-trust prompt, you're good.
 
 ### Optional 🌱
 
-6. **Check for Node.js** (only needed for the optional consume half of [Exercise D](#exercise-d--consume--create-an-mcp-server)):
+7. **Check for Node.js** (only needed for the optional consume half of [Exercise D](#exercise-d--consume--create-an-mcp-server)):
 
    ```bash
    node --version
@@ -145,7 +157,7 @@ Today you're going to **consume** one off-the-shelf MCP server (optional, requir
 
 ## Part 2 — Hands-on
 
-Now that the vocabulary is in place, run the four exercises in order. They build on each other (Exercise A installs `pytest` and `mcp[cli]`; Exercise B leaves `app.py` reverted for Exercise C; Exercise C builds three custom agents that work together in a mini code-review pipeline; Exercise D's MCP server imports from the `app.py` Exercise A fixed).
+Now that the vocabulary is in place, run the four exercises in order. They build on each other (Exercise A installs `pytest` and `mcp[cli]`; Exercise B is a read-through walk of the Permission levels; Exercise C builds three custom agents that work together in a mini code-review pipeline; Exercise D's MCP server imports from the `app.py` Exercise A fixed).
 
 ### Exercise A — Agent loop in practice
 
@@ -154,13 +166,13 @@ The activities sign-up endpoint at `agents/backend/app.py` has two bugs you can 
 1. **No duplicate-email guard.** A student can sign up for the same activity twice (and so can their evil twin from a typo).
 2. **No capacity check.** Activities have a `max_participants`, but `signup_for_activity` cheerfully appends past it.
 
-You're going to let Agent fix both, write tests for them, and iterate until `pytest` is green.
+You're going to let Agent fix both, write tests for them, and iterate until `pytest` is green. We'll do this in **two prompts** (one per concern) — that's a Copilot best practice: smaller, focused prompts produce tighter loops than one giant ask.
 
 1. Make sure your chat is set to **Agent**, **Local** target, **Default Approvals**.
 
-2. Drag `agents/backend/app.py` into the chat panel so it's pinned as context, then send:
+2. Drag `agents/backend/app.py` into the chat panel so it's pinned as context, then send **Prompt 1 — fix the bugs**:
 
-   > ![Static Badge](https://img.shields.io/badge/-Prompt-text?style=social&logo=github%20copilot)
+   > ![Static Badge](https://img.shields.io/badge/-Prompt%201-text?style=social&logo=github%20copilot)
    >
    > ```prompt
    > Two bugs in agents/backend/app.py signup_for_activity:
@@ -171,25 +183,34 @@ You're going to let Agent fix both, write tests for them, and iterate until `pyt
    > "Already signed up". When the capacity case is hit, return HTTP 400 with
    > detail "Activity is full".
    >
-   > Then create agents/tests/__init__.py and agents/tests/test_app.py with
-   > four pytest cases: happy path, duplicate, capacity, and 404 (unknown
-   > activity). Use FastAPI's TestClient.
+   > Do not write tests yet — just the fix.
+   > ```
+
+3. **Watch the loop on the fix.** Approve each tool call. You should see Agent read `app.py`, propose edits in the diff overlay, and stop once the two guards are in place.
+
+4. Once the fix is accepted, send **Prompt 2 — add the tests**:
+
+   > ![Static Badge](https://img.shields.io/badge/-Prompt%202-text?style=social&logo=github%20copilot)
    >
-   > Finally: run `pip install -r agents/requirements.txt` and
+   > ```prompt
+   > Now create agents/tests/__init__.py and agents/tests/test_app.py with
+   > four pytest cases covering the signup endpoint: happy path, duplicate
+   > email, capacity reached, and 404 (unknown activity). Use FastAPI's
+   > TestClient.
+   >
+   > Then run `pip install -r agents/requirements.txt` and
    > `pytest agents/tests/ -v` from the integrated terminal until all four
    > tests pass. Iterate if any fail.
    > ```
 
-3. **Watch the loop.** Approve each tool call as it comes up. You should see Agent:
+5. **Watch the loop on the tests.** Agent should:
 
-   - Read `app.py` (one tool call).
-   - Propose edits in the diff overlay — accept or refine them.
    - Create `agents/tests/__init__.py` and `agents/tests/test_app.py`.
    - Run `pip install -r agents/requirements.txt` (this is where `pytest` and `mcp[cli]` resolve).
    - Run `pytest agents/tests/ -v` and read the output.
    - If anything failed: edit, re-run, repeat.
 
-4. **Manually verify the duplicate guard from a separate terminal** — start the server (`uvicorn agents.backend.app:app --reload`) and:
+6. **Manually verify the duplicate guard from a separate terminal** — start the server (`uvicorn agents.backend.app:app --reload`) and:
 
    ```bash
    curl -X POST "http://127.0.0.1:8000/activities/Chess%20Club/signup?email=test@mergington.edu"
@@ -221,11 +242,13 @@ Notice the difference: Agent stops after the plan, you eyeball it, type `go`, an
 
 ---
 
-### Exercise B — Permission levels
+### Exercise B — Permission levels (read-through)
 
-You'll run the same trivial change three times, switching the **Permission** picker each run. Between runs, revert with `git checkout agents/backend/app.py`.
+> 📖 **No hands-on this round.** This exercise is a walk-through — read it, build a mental model of how the three Permission levels behave, and move on. (We're skipping the three reverts-and-re-runs because the back-and-forth `git checkout` dance is more friction than learning.)
 
-**The prompt (use it verbatim for runs 1 and 2):**
+The scenario: you give Agent the **same trivial prompt** three times, only changing the **Permission** picker between runs. Here's what you'd see in each case.
+
+**The prompt (the one we'd send for runs 1 and 2):**
 
 > ![Static Badge](https://img.shields.io/badge/-Prompt-text?style=social&logo=github%20copilot)
 >
@@ -236,32 +259,25 @@ You'll run the same trivial change three times, switching the **Permission** pic
 > verify the response.
 > ```
 
-#### Run 1 — Default Approvals
+#### Run 1 — Default Approvals (what would happen)
 
-1. Set permission picker to **Default Approvals**. Send the prompt.
-2. **Count the dialogs.** For each one, read what it's asking — usually "run this command?" and "apply this edit?".
+Agent pauses on **every tool call**: "read this file?", "apply this edit?", "run this command?". You click through each one. Slow, but you see (and can stop) every action before it touches your machine. **Pick this when:** you don't fully trust the prompt, or the change is hard to undo.
 
-#### Run 2 — Bypass Approvals
+#### Run 2 — Bypass Approvals (what would happen)
 
-1. Revert: `git checkout agents/backend/app.py`.
-2. Set permission picker to **Bypass Approvals**. Send the **same prompt**.
-3. Notice: zero dialogs. The agent edits, runs, and reports back without pausing.
+Zero dialogs. The agent edits `app.py`, runs `curl`, and reports back without pausing once. Fast, but if the prompt was wrong you only find out after the fact. **Pick this when:** the change is contained, you're watching the chat live, and you have `git` to bail out with.
 
-#### Run 3 — Autopilot (Preview)
+#### Run 3 — Autopilot Preview (what would happen) — with a deliberately vague prompt
 
-1. Revert: `git checkout agents/backend/app.py`.
-2. Set permission picker to **Autopilot (Preview)**.
-3. Send a **deliberately ambiguous** prompt:
+> ![Static Badge](https://img.shields.io/badge/-Prompt-text?style=social&logo=github%20copilot)
+>
+> ```prompt
+> Add a health check.
+> ```
 
-   > ![Static Badge](https://img.shields.io/badge/-Prompt-text?style=social&logo=github%20copilot)
-   >
-   > ```prompt
-   > Add a health check.
-   > ```
+Under Default or Bypass, the agent would stop and ask: "what kind of health check? what path? what response?". Under Autopilot it **answers its own clarifying question** and just does *something* — usually a `GET /health` returning `{"status": "ok"}`, but the exact shape is up to the model. **Pick this when:** you're in a sandbox, you have a coffee, and the cost of "wrong but recoverable" is low.
 
-4. Watch what happens. Under Default or Bypass, the agent would stop and ask "what kind of health check? what path? what response?". Under Autopilot, it answers its own clarifying question and just does *something*.
-
-> ✅ **You should now see:** three working `/healthz` endpoints (one per run, reverted between) and a working mental model for when each tier is appropriate. (Final state: revert one more time so `app.py` is clean for Exercise C.)
+> ✅ **You should now see** (mentally): why each tier exists, and which one you'd reach for in three different situations — a production hotfix, a routine refactor on a feature branch, and a Saturday-afternoon spike in a throwaway repo.
 
 ---
 
