@@ -244,40 +244,48 @@ Notice the difference: Agent stops after the plan, you eyeball it, type `go`, an
 
 ### Exercise B — Permission levels (read-through)
 
-> 📖 **No hands-on this round.** This exercise is a walk-through — read it, build a mental model of how the three Permission levels behave, and move on. (We're skipping the three reverts-and-re-runs because the back-and-forth `git checkout` dance is more friction than learning.)
+> 📖 **No hands-on this round.** Read it, build a mental model of how Copilot lets you trade safety for speed, and move on.
 
-The scenario: you give Agent the **same trivial prompt** three times, only changing the **Permission** picker between runs. Here's what you'd see in each case.
+There are **two surfaces** where you control how much Copilot is allowed to do without asking, and they work differently:
 
-**The prompt (the one we'd send for runs 1 and 2):**
+#### 1. In-editor Agent Mode → the **Permission picker** (UI dropdown)
 
-> ![Static Badge](https://img.shields.io/badge/-Prompt-text?style=social&logo=github%20copilot)
->
-> ```prompt
-> Add a GET /healthz endpoint to agents/backend/app.py that returns
-> {"status": "ok"}. Then start the server (or assume it's running) and
-> `curl http://127.0.0.1:8000/healthz` from the integrated terminal to
-> verify the response.
-> ```
+Right next to the chat input. Three settings, picked per session:
 
-#### Run 1 — Default Approvals (what would happen)
+| Picker option | Behavior |
+|---------------|----------|
+| **Default Approvals** | Pauses on every tool call ("read this file?", "run this command?"). Slow but safe. Pick when you don't fully trust the prompt or the change is hard to undo. |
+| **Bypass Approvals** | Zero dialogs. The agent edits, runs, and reports back without pausing. Fast — but if the prompt was wrong, you only find out after the fact. Pick when the change is contained and you have `git` to bail out with. |
+| **Autopilot (Preview)** | Bypass + the agent answers its own clarifying questions instead of stopping. Pick when you're in a sandbox and "wrong but recoverable" is fine. Gated by the `chat.autopilot.enabled` setting (introduced in [VS Code 1.111](https://code.visualstudio.com/updates/v1_111)). |
 
-Agent pauses on **every tool call**: "read this file?", "apply this edit?", "run this command?". You click through each one. Slow, but you see (and can stop) every action before it touches your machine. **Pick this when:** you don't fully trust the prompt, or the change is hard to undo.
+Reference: [Permission levels — VS Code docs](https://code.visualstudio.com/docs/copilot/agents/agent-tools#_permission-levels).
 
-#### Run 2 — Bypass Approvals (what would happen)
+There is **no slash command** to flip these in in-editor Agent Mode. The picker is the only way.
 
-Zero dialogs. The agent edits `app.py`, runs `curl`, and reports back without pausing once. Fast, but if the prompt was wrong you only find out after the fact. **Pick this when:** the change is contained, you're watching the chat live, and you have `git` to bail out with.
+#### 2. Copilot CLI sessions → the `/yolo` slash command
 
-#### Run 3 — Autopilot Preview (what would happen) — with a deliberately vague prompt
+If you're using **Copilot CLI** (the `copilot` background-agent harness, also surfaced inside VS Code's Chat view), you get a different control: type `/` in the chat input to see the available slash commands. The two that matter for permissions:
 
-> ![Static Badge](https://img.shields.io/badge/-Prompt-text?style=social&logo=github%20copilot)
->
-> ```prompt
-> Add a health check.
-> ```
+| Slash command | Behavior |
+|---------------|----------|
+| **`/yolo`** | Toggles auto-approval of tool calls for the current CLI session — the agent runs tools and terminal commands without prompting. |
+| **`/autoApprove`** | Alias for `/yolo`. Same behavior. |
 
-Under Default or Bypass, the agent would stop and ask: "what kind of health check? what path? what response?". Under Autopilot it **answers its own clarifying question** and just does *something* — usually a `GET /health` returning `{"status": "ok"}`, but the exact shape is up to the model. **Pick this when:** you're in a sandbox, you have a coffee, and the cost of "wrong but recoverable" is low.
+Reference: [Copilot CLI — slash commands](https://code.visualstudio.com/docs/copilot/agents/copilot-cli). Worktree-isolated CLI sessions are pinned to bypass-approvals and can't be changed back.
 
-> ✅ **You should now see** (mentally): why each tier exists, and which one you'd reach for in three different situations — a production hotfix, a routine refactor on a feature branch, and a Saturday-afternoon spike in a throwaway repo.
+That's it for permission-related slash commands today — anything else you might see floating around (`/auto`, `/autopilot`, `/approve`, `/trust`, `/safe`) is folklore. Not real.
+
+#### 3. Settings worth knowing about (one-liners)
+
+If you want finer control than the picker gives you:
+
+- **`chat.tools.eligibleForAutoApproval`** — block specific tools from ever being auto-approved, even under Bypass. Useful for `terminal` or destructive tools.
+- **`chat.tools.urls.autoApprove`** — per-URL/domain auto-approve patterns for fetch-style tools.
+- **Command Palette → `Chat: Manage Tool Approval`** — central UI to pre/post-approve individual tools across sessions.
+
+Reference: [Enable or disable tool auto-approval](https://code.visualstudio.com/docs/copilot/agents/agent-tools#_enable-or-disable-tool-auto-approval-experimental).
+
+> ✅ **You should now see** (mentally): the picker is your everyday lever inside VS Code, `/yolo` is the equivalent inside Copilot CLI, and the settings let you put fences around either one.
 
 ---
 
