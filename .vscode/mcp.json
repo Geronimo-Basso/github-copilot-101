@@ -13,6 +13,16 @@
       "type": "stdio",
       "command": "${workspaceFolder}/agents/.venv/bin/python",
       "args": ["-m", "agents.mcp_servers.activities_server"]
+    },
+    "playwright": {
+      "type": "stdio",
+      "command": "npx",
+      "args": [
+        "-y",
+        "@playwright/mcp@latest",
+        "--browser",
+        "msedge"
+      ]
     }
   },
   "inputs": []
