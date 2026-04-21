@@ -85,13 +85,6 @@ Copilot CLI is a **terminal-native AI assistant** that runs in bash, zsh, or Pow
   - **`plan`** — generates a plan without executing (for review before action)
   - **`autopilot`** — autonomous multi-turn execution (keeps looping until done)
 
-The CLI gives you:
-- **File and folder context** via `@` mentions (`@file.py`, `@folder/`, `@.`)
-- **Slash commands** for workflows (`/plan`, `/research`, `/delegate`, `/skills`)
-- **Tool permissions** via allowlist/denylist patterns
-- **Customization hooks** (custom agents, plugins, skills, MCP servers)
-- **Programmatic invocation** for CI/CD (`copilot -p "..." --output-format json`)
-
 ### 1.2 When to use CLI vs VS Code
 
 **Reach for CLI when:**
@@ -222,7 +215,7 @@ Type `exit` or press `Ctrl+C` to quit.
 
 🛠️ **Hands-on**
 
-The CLI uses `@` mentions to add files and folders to the conversation context. Combined with slash commands, you control what the model sees and how much of your token budget is consumed.
+Use `@` mentions and slash commands to control context.
 
 **Step 1: Start interactive mode**
 
@@ -255,24 +248,17 @@ Try these prompts one by one:
 > /context
 ```
 
-This shows:
-- Current token usage (input tokens used vs. model limit)
-- A visualization of context window pressure
-- List of files currently in context
-
 **Step 4: Manage the context window**
 
 ```prompt
 > /compact
 ```
 
-This summarizes the conversation history to free up tokens. The summary stays in context, but the raw turns are discarded.
-
 ```prompt
 > /clear
 ```
 
-This starts a completely new conversation (all history discarded). Alias: `/new`.
+Alias: `/new`.
 
 > 📌 **Important:** There is **no** `/reset`, `/stop`, or natural-language "remove context" command. Manage scope via `@` mentions per message and use `/compact` or `/clear` to reduce window pressure.
 
@@ -283,8 +269,6 @@ If the CLI makes a change you want to revert, use:
 ```prompt
 > /undo
 ```
-
-This rewinds the last turn (reverts file changes if any were made).
 
 > ✅ **You should now see:** Context usage displayed via `/context`, a summarized history after `/compact`, a fresh session after `/clear`, and confidence that you can revert mistakes with `/undo`.
 
