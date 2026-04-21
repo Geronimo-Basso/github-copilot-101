@@ -23,6 +23,10 @@ Drive **GitHub Copilot's** built-in agent through a real multi-file change with 
     - [D.2 — Build your own MCP server (REQUIRED)](#d2--build-your-own-mcp-server-required)
     - [D.3 — Use an off-the-shelf MCP from a registry (Microsoft Learn MCP) (OPTIONAL)](#d3--use-an-off-the-shelf-mcp-from-a-registry-microsoft-learn-mcp-optional)
     - [D.4 — Browser automation with the Playwright MCP (OPTIONAL)](#d4--browser-automation-with-the-playwright-mcp-optional)
+  - [Exercise E — Package it all as a plugin](#exercise-e--package-it-all-as-a-plugin)
+    - [E.1 — What plugins are](#e1--what-plugins-are)
+    - [E.2 — Scaffold my-mergington-plugin/](#e2--scaffold-my-mergington-plugin)
+    - [E.3 — Install & verify](#e3--install--verify)
 
 ## What You'll Learn
 
@@ -32,6 +36,7 @@ By the end of this lab you will be able to:
 - **Pick the right Permission level** (Default Approvals, Bypass Approvals, Autopilot Preview) for the risk in front of you, knowing exactly what each one trades away.
 - **Author workspace-scoped custom agents** at `.github/agents/<name>.agent.md` demonstrating three patterns: **handoffs** (planner → executor), **least-privilege** (read-only reviewer), and **scope-locking** (test-only author).
 - **Consume** an existing MCP server in VS Code and **author your own** ~30-line `FastMCP` server in Python that exposes data the model cannot otherwise see.
+- **Package agents and MCP servers as a VS Code plugin** — the capstone that bundles everything you built into a shareable, installable format.
 
 ---
 
@@ -769,8 +774,249 @@ D.1 and D.2 showed MCPs that expose **file access** and **database queries**. D.
 
 > ✅ **You should now see:** the Playwright MCP tool calls rendered inline in the transcript (navigate → screenshot → evaluate), an actual PNG file landed in `./artifacts/`, and structured JSON in `./data/`. You just gave Agent a real browser.
 
+---
+
+### Exercise E — Package it all as a plugin
+
+You just built custom agents (Exercise C) and MCP servers (Exercise D) as separate workspace files. **Plugins** bundle them all into a prepackaged, shareable format. This is the capstone: you'll create a single directory with a `plugin.json` manifest that wraps your test-author agent and activities MCP server, ready for distribution.
+
+#### E.1 — What plugins are
+
+> 📖 **Read-through** — understanding the plugin structure.
+
+VS Code Copilot plugins are **bundles** that can include any combination of:
+
+1. **Slash commands** — custom `/` commands in chat
+2. **Agent skills** — on-demand instructions and scripts
+3. **Custom agents** — the `.agent.md` files you created in Exercise C
+4. **Hooks** — shell commands that fire at agent lifecycle points
+5. **MCP servers** — the `.mcp.json` entries you built in Exercise D
+
+You already built pieces #3 and #5 individually. Plugins wrap them for **distribution and discovery**. Think of a plugin as a directory with:
+
+- A `plugin.json` manifest (required) — defines plugin metadata
+- Optional subdirectories: `agents/`, `skills/`, `hooks/`, and an `.mcp.json` file
+
+**Standard plugin directory layout:**
+
+```
+my-plugin/
+  plugin.json              # Required — plugin identity and pointers
+  agents/
+    reviewer.agent.md      # Custom agents go here
+  skills/
+    tester/
+      SKILL.md             # Agent skills go here
+  hooks.json               # Hook configuration (optional)
+  .mcp.json                # MCP server definitions (optional)
+```
+
+**The `plugin.json` manifest** (at the plugin root) has these fields:
+
+- **`name`** (required) — Kebab-case plugin name. Only lowercase letters, numbers, and hyphens. Max 64 chars. **No slashes or colons.** Invalid names silently fail to load.
+- **`description`** (optional) — Brief description (max 1024 chars)
+- **`version`** (optional) — Semantic version (e.g., `1.0.0`)
+- **`author`** (optional) — Object with `name` (required), `email`, `url`
+- **`skills`** (optional) — Path(s) to skill directories (defaults to `skills/`)
+- **`agents`** (optional) — Path(s) to agent directories (defaults to `agents/`)
+- **`hooks`** (optional) — Path to hooks config file or inline hooks object
+- **`mcpServers`** (optional) — Path to MCP config file (e.g., `.mcp.json`) or inline definitions
+
+**Example `plugin.json`:**
+
+```json
+{
+  "name": "my-dev-tools",
+  "description": "React development utilities",
+  "version": "1.0.0",
+  "author": {
+    "name": "Jane Doe"
+  },
+  "agents": "agents/",
+  "mcpServers": ".mcp.json"
+}
+```
+
+**Key facts:**
+
+- **Plugins are in preview.** You must enable the `chat.plugins.enabled` setting (may be managed at the org level — contact your admin if it's grayed out).
+- **Plugin formats:** VS Code auto-detects plugin format by looking for `plugin.json` at the root (Copilot format, the default), `.claude-plugin/plugin.json` (Claude format), or `.plugin/plugin.json` (OpenPlugin format). We'll use the Copilot format.
+- **Security note:** Plugins can contain hooks and MCP servers that run code. Review the contents before installing.
+
+**What you're building:** You already created a `test-author` custom agent (Exercise C.3) and an `activities_server` MCP (Exercise D.2). In E.2, you'll move these into a plugin directory structure with a `plugin.json` manifest. In E.3, you'll see how VS Code would discover and load it (though local plugin installation is fiddly in preview — think of this as a "here's where this is going" peek).
+
+#### E.2 — Scaffold `my-mergington-plugin/`
+
+> 🛠️ **Hands-on** — build the plugin directory structure.
+
+1. **Create the plugin root directory** at the workspace root:
+
+   ```bash
+   mkdir my-mergington-plugin
+   ```
+
+2. **Create the `plugin.json` manifest** at `my-mergington-plugin/plugin.json`:
+
+   ```json
+   {
+     "name": "my-mergington-plugin",
+     "description": "Test-author agent and activities MCP server for the Mergington School app",
+     "version": "0.1.0",
+     "author": {
+       "name": "Your Name"
+     },
+     "agents": "agents/",
+     "mcpServers": ".mcp.json"
+   }
+   ```
+
+   **What each field does:**
+   - `name` — Plugin identifier. Must be kebab-case, lowercase alphanumeric + hyphens, max 64 chars. No slashes or colons.
+   - `description` — Shows up in plugin browsers and marketplaces
+   - `version` — Semantic version. Bump this when you publish updates.
+   - `author` — Your name (required), plus optional `email` and `url`
+   - `agents` — Points to the `agents/` subdirectory inside the plugin
+   - `mcpServers` — Points to the `.mcp.json` file at the plugin root
+
+3. **Create the `agents/` directory and copy the test-author agent:**
+
+   ```bash
+   mkdir my-mergington-plugin/agents
+   cp .github/agents/test-author.agent.md my-mergington-plugin/agents/test-author.agent.md
+   ```
+
+   > 💡 **Note:** You already built this agent in Exercise C.3. You're just moving it into the plugin structure. The file stays identical — same frontmatter, same system prompt.
+
+4. **Create the `.mcp.json` file** at `my-mergington-plugin/.mcp.json`:
+
+   ```json
+   {
+     "mcpServers": {
+       "mergington-activities": {
+         "type": "stdio",
+         "command": "python",
+         "args": ["-m", "agents.mcp_servers.activities_server"]
+       }
+     }
+   }
+   ```
+
+   **Key differences from the workspace `.vscode/mcp.json`:**
+   - Top-level key is `mcpServers` (not `servers`)
+   - We simplified the `command` to `"python"` (not an absolute venv path) — in production, you'd either bundle a Python runtime, document the Python version requirement, or use `npx` to invoke a JavaScript MCP server. For this lab, assume the user has Python in their PATH.
+
+   > 💡 **Note:** This references the same `activities_server.py` you wrote in Exercise D.2. The plugin isn't copying the server code — it's just pointing to it. In a real distributed plugin, you'd either bundle the server code inside the plugin directory or publish it as a separate PyPI/npm package and reference it here.
+
+5. **Verify the directory tree:**
+
+   ```bash
+   tree my-mergington-plugin -L 2
+   ```
+
+   Expected output:
+
+   ```
+   my-mergington-plugin/
+   ├── .mcp.json
+   ├── agents/
+   │   └── test-author.agent.md
+   └── plugin.json
+   ```
+
+   **What each file does:**
+   - `plugin.json` — Plugin identity and configuration. VS Code reads this to discover the plugin.
+   - `agents/test-author.agent.md` — The custom agent you built in C.3. Plugin users will see this agent in the agent picker.
+   - `.mcp.json` — MCP server definitions. The activities MCP will auto-start when the plugin is enabled.
+
+> ✅ **You should now see:** a `my-mergington-plugin/` directory at the workspace root with three items: `plugin.json`, `agents/test-author.agent.md`, and `.mcp.json`. Run `cat my-mergington-plugin/plugin.json` to confirm the manifest is valid JSON with the correct `name` and `agents`/`mcpServers` pointers.
+
+#### E.3 — Install & verify
+
+> 📖 **Read-through** — how VS Code discovers and loads plugins.
+
+**Enabling plugin support:**
+
+Plugins are in preview, gated by the `chat.plugins.enabled` setting. Add this to your `.vscode/settings.json` (workspace settings) or User Settings:
+
+```json
+{
+  "chat.plugins.enabled": true
+}
+```
+
+> ⚠️ **Important:** This setting is often **managed at the organization level**. If it's grayed out in your Settings UI, it means your org admin controls it — you'll need to contact them to enable plugin support.
+
+**How VS Code discovers plugins:**
+
+VS Code auto-detects plugin format by checking for `plugin.json` in several locations:
+
+1. `.plugin/plugin.json` (OpenPlugin format)
+2. `plugin.json` at the root (Copilot format — this is what we used)
+3. `.github/plugin/plugin.json`
+4. `.claude-plugin/plugin.json` (Claude format)
+
+For local development, you'd register the plugin path using the `chat.pluginLocations` setting:
+
+```json
+{
+  "chat.pluginLocations": {
+    "/absolute/path/to/my-mergington-plugin": true
+  }
+}
+```
+
+Set the value to `true` to enable the plugin, or `false` to keep it registered but disabled.
+
+**What you'd see after installation:**
+
+Once the plugin is loaded and enabled, the following would appear in VS Code:
+
+1. **Agent picker** — The `test-author` agent shows up in the chat mode picker dropdown. You could switch to it with `@test-author` or by clicking the mode picker and selecting "test-author".
+2. **MCP server list** — Run **MCP: List Servers** from the Command Palette and you'd see `mergington-activities` listed and auto-started.
+3. **Tool availability** — The `list_activities` and `register_activity` tools (exposed by the activities MCP server) appear when you ask Agent to work with activities data.
+
+**Verifying in practice:**
+
+To test if the plugin works in your local environment, you'd:
+
+1. Add `"chat.plugins.enabled": true` to `.vscode/settings.json` (if not org-disabled)
+2. Add the plugin path to `chat.pluginLocations`:
+   ```json
+   {
+     "chat.pluginLocations": {
+       "${workspaceFolder}/my-mergington-plugin": true
+     }
+   }
+   ```
+3. Reload the VS Code window (**Developer: Reload Window** from Command Palette)
+4. Open Copilot Chat → check the mode picker for `test-author`
+5. Run **MCP: List Servers** → confirm `mergington-activities` appears
+
+**Troubleshooting:**
+
+- **Plugin doesn't appear:** Check that `chat.plugins.enabled` is `true` and not org-managed. Verify the `name` field in `plugin.json` uses only lowercase letters, numbers, and hyphens (no slashes, colons, or special characters — invalid names cause silent failures).
+- **Agent doesn't load:** Open `my-mergington-plugin/agents/test-author.agent.md` and confirm the `name` field in the YAML frontmatter matches the filename (without `.agent.md`). Invalid names are silently skipped.
+- **MCP server doesn't start:** Check that `python` is in your PATH and that `agents.mcp_servers.activities_server` is importable. Run `python -m agents.mcp_servers.activities_server` from the workspace root to test manually.
+
+**Where this is going:**
+
+In production, you'd publish this plugin to a Git repository and share it via:
+
+- **Plugin marketplaces** — e.g., the [copilot-plugins](https://github.com/github/copilot-plugins) or [awesome-copilot](https://github.com/github/awesome-copilot/) repos on GitHub. Users discover and install plugins from the **Agent Plugins** view in the Extensions sidebar.
+- **Direct Git URL** — Users can install from any Git repo with **Chat: Install Plugin From Source** (Command Palette).
+
+Local plugin loading (via `chat.pluginLocations`) is mostly for development and testing. Once you're happy with your plugin, you'd push it to a Git repo and share the URL, or submit it to a marketplace for broader discovery.
+
+> ✅ **You should now understand:** how plugins bundle agents + MCP servers + hooks + skills into a single distributable package, what the `plugin.json` manifest structure looks like, and how VS Code would discover and load your `my-mergington-plugin` if you enabled `chat.plugins.enabled` and registered its path. The plugin is sitting in your workspace — it's a preview of how you'd share your custom agents and MCP servers with teammates or the community.
+
+---
+
 #### 📖 Wrap: What we skipped
 
 - **Resources** — MCP's other primitive (think files/URIs the model can read). We only built **tools** today. Resources are a great follow-up.
 - **The MCP host/client** — we used Copilot Chat *as* the client. Writing a custom MCP host is a different lab.
 - **The MCP registry** — explore [`https://github.com/mcp`](https://github.com/mcp) for hundreds of community servers (GitHub, Sentry, Postgres, ...).
+- **Plugin marketplaces** — how to publish plugins to the [copilot-plugins](https://github.com/github/copilot-plugins) or [awesome-copilot](https://github.com/github/awesome-copilot/) repos for broader discovery.
+- **Publishing plugins** — versioning, distribution workflows, and handling plugin updates in production.
+- **Claude-format plugins** — the `.claude-plugin/plugin.json` structure and `${CLAUDE_PLUGIN_ROOT}` token for cross-tool compatibility.
+- **OpenPlugin format** — the `.plugin/plugin.json` structure for plugins that work across multiple AI tools.
