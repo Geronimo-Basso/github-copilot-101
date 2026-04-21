@@ -1,0 +1,19 @@
+{
+  "servers": {
+    "school-files": {
+      "type": "stdio",
+      "command": "npx",
+      "args": [
+        "-y",
+        "@modelcontextprotocol/server-filesystem",
+        "${workspaceFolder}/agents/sample-data"
+      ]
+    },
+    "mergington-activities": {
+      "type": "stdio",
+      "command": "${workspaceFolder}/agents/.venv/bin/python",
+      "args": ["-m", "agents.mcp_servers.activities_server"]
+    }
+  },
+  "inputs": []
+}

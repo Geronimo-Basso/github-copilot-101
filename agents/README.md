@@ -514,7 +514,7 @@ Open `.vscode/mcp.json` and inspect the entry:
 
 > ✅ **You should now see:** an inline `read_file` tool call against `school-files` in the chat transcript, followed by Agent's summary of the seven policies. The summary is grounded in a file Agent could not otherwise see.
 
-#### D.2 — Build your own MCP server (REQUIRED)
+#### D.2 — Build your own MCP server
 
 You're going to expose the in-memory `activities` dict from `agents/backend/app.py` as an MCP server, so that Agent can answer questions like "which activity is closest to full?" by calling tools instead of guessing.
 
@@ -524,9 +524,9 @@ You're going to expose the in-memory `activities` dict from `agents/backend/app.
    pip install -r agents/requirements.txt
    ```
 
-2. **Confirm the package skeleton exists.** The repo ships an empty `agents/mcp/__init__.py` so Python treats `agents/mcp/` as a package.
+2. **Confirm the package skeleton exists.** The repo ships an empty `agents/mcp_servers/__init__.py` so Python treats `agents/mcp_servers/` as a package.
 
-3. **Open `agents/mcp/activities_server.py`.** It's already authored for you — the full ~30-line server lives at [`agents/mcp/activities_server.py`](./mcp/activities_server.py):
+3. **Open `agents/mcp_servers/activities_server.py`.** It's already authored for you — the full ~30-line server lives at [`agents/mcp_servers/activities_server.py`](./mcp_servers/activities_server.py):
 
    ```python
    """Mergington activities MCP server — exposes the in-memory activities dict
@@ -569,7 +569,7 @@ You're going to expose the in-memory `activities` dict from `agents/backend/app.
        "mergington-activities": {
          "type": "stdio",
          "command": "${workspaceFolder}/.venv/bin/python",
-         "args": ["-m", "agents.mcp.activities_server"]
+         "args": ["-m", "agents.mcp_servers.activities_server"]
        }
      }
    }
