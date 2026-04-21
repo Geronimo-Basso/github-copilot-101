@@ -299,7 +299,7 @@ You'll build three custom agents, each demonstrating a different angle of the su
 
 You'll create a custom agent whose only job is to **scaffold a FastAPI endpoint with matching tests** — and whose handoff button transfers the plan to **Agent** for execution.
 
-1. Open the Command Palette → **Chat: New Custom Agent**. Name it `endpoint-scaffolder`. Accept `.github/agents/` as the location. VS Code creates `.github/agents/endpoint-scaffolder.agent.md`.
+1. Manually create the file `.github/agents/endpoint-scaffolder.agent.md` (create the `.github/agents/` directory first if it doesn't exist).
 
 2. **Replace the generated frontmatter** with this exact block (copy verbatim — the keys matter):
 
@@ -360,7 +360,7 @@ You'll create a custom agent whose only job is to **scaffold a FastAPI endpoint 
 
 You'll create a **read-only** custom agent that reviews code but never edits — demonstrating the **least-privilege** security boundary. Its tool whitelist excludes `editFiles` and `runCommands`.
 
-1. Open the Command Palette → **Chat: New Custom Agent**. Name it `code-quality-reviewer`. Accept `.github/agents/` as the location.
+1. Manually create the file `.github/agents/code-quality-reviewer.agent.md`.
 
 2. **Replace the generated frontmatter** with this exact block:
 
@@ -415,7 +415,7 @@ You'll create a **read-only** custom agent that reviews code but never edits —
 
 You'll create a custom agent that writes **only** test files under `agents/tests/` — demonstrating **scope-locking** via system-prompt enforcement. It has `editFiles`, but the prompt constrains where it can write.
 
-1. Open the Command Palette → **Chat: New Custom Agent**. Name it `test-author`. Accept `.github/agents/` as the location.
+1. Manually create the file `.github/agents/test-author.agent.md`.
 
 2. **Replace the generated frontmatter** with this exact block:
 
