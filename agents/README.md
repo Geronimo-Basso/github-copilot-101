@@ -291,47 +291,41 @@ Reference: [Enable or disable tool auto-approval](https://code.visualstudio.com/
 
 ### Exercise C — Build a custom-agent toolbox
 
-You'll build three custom agents, each demonstrating a different angle of the surface — **handoffs** (workflow chaining), **least-privilege** (read-only tools), and **scope-locking** (edit boundaries). Together they form a mini code-review pipeline: the scaffolder plans a feature, Agent builds it, the reviewer audits it, and the test author adds edge-case coverage.
+You'll build three custom agents, each demonstrating a different angle of the surface — **focused scaffolding** (a narrow specialist), **least-privilege** (read-only tools), and **scope-locking** (edit boundaries). Together they cover the most useful patterns: build a feature, audit it, harden it with tests.
 
 ---
 
-#### C.1 — Plan-first scaffolder with handoff
+#### C.1 — Endpoint scaffolder
 
-You'll create a custom agent whose only job is to **scaffold a FastAPI endpoint with matching tests** — and whose handoff button transfers the plan to **Agent** for execution.
+You'll create a custom agent whose only job is to **scaffold a FastAPI endpoint and matching tests** in this app.
 
 1. Manually create the file `.github/agents/endpoint-scaffolder.agent.md` (create the `.github/agents/` directory first if it doesn't exist).
 
-2. **Replace the generated frontmatter** with this exact block (copy verbatim — the keys matter):
+2. **Replace the generated frontmatter** with this exact block:
 
    ```yaml
    ---
-   description: Scaffold a FastAPI endpoint in the agents/ app with matching tests and minimal frontend wiring.
+   name: endpoint-scaffolder
+   description: Scaffold a FastAPI endpoint in the agents/ app with matching tests.
    tools: [codebase, editFiles, runCommands, findTestFiles]
    model: gpt-5
-   user-invocable: true
-   disable-model-invocation: true
-   handoffs:
-     - agent: agent
-       label: Implement this plan
-       prompt: "Implement the plan above. Run pytest agents/tests/ -v and don't stop until green."
    ---
    ```
 
    Key points:
-   - **No `infer:`** — that frontmatter key is deprecated. Use `user-invocable` (shows up in the picker) and `disable-model-invocation` (won't be auto-invoked by other agents).
+   - **`name:`** is the identifier shown in the agent picker.
    - **`tools:` is a whitelist.** `codebase` (read), `editFiles` (write), `runCommands` (terminal), `findTestFiles` (locate tests). No MCP tools, no anything else.
-   - **`handoffs:`** defines the button label and the canned prompt the next agent receives.
 
 3. **Below the frontmatter, paste this system-prompt body verbatim:**
 
    ````markdown
    You are an endpoint scaffolder for the FastAPI app under `agents/`. Follow these house rules without deviation:
 
-   1. **Plan first, code never.** Your output is a numbered plan only — list every file you will create or modify, every test name, and every new endpoint signature. Do **not** apply edits yourself; the human will use the "Implement this plan" handoff to transfer execution to Agent.
-   2. **Match the existing app shape.** New endpoints belong in `agents/backend/app.py`. New tests belong in `agents/tests/test_app.py` and use `fastapi.testclient.TestClient`.
-   3. **One endpoint, one feature, one PR.** Keep the surface area small. If the request implies more than one endpoint, list the others as "out of scope for this plan" and stop.
-   4. **Tests are mandatory.** Every plan must include at least one happy-path test and one error-case test (404 or 400).
-   5. **Frontend wiring is optional.** Mention it as a one-line follow-up in the plan only if the prompt explicitly asks for UI changes.
+   1. **Match the existing app shape.** New endpoints belong in `agents/backend/app.py`. New tests belong in `agents/tests/test_app.py` and use `fastapi.testclient.TestClient`.
+   2. **One endpoint, one feature.** Keep the surface area small. If the request implies more than one endpoint, build the primary one and list the others as "out of scope" at the end.
+   3. **Tests are mandatory.** Every endpoint you add must ship with at least one happy-path test and one error-case test (404 or 400).
+   4. **Always run the suite at the end.** Run `pytest agents/tests/ -v` and report pass/fail counts. Don't declare done until tests are green.
+   5. **No frontend changes** unless the user explicitly asks for them.
    ````
 
 4. **Save the file.** It should now be visible in the agent picker as `endpoint-scaffolder` with the description string from the frontmatter.
@@ -348,11 +342,9 @@ You'll create a custom agent whose only job is to **scaffold a FastAPI endpoint 
    > participants. 404 if the activity is unknown.
    > ```
 
-   The scaffolder produces a structured plan following the five house rules above (file list, endpoint signature, test names, no edits applied yet).
+   The scaffolder edits `agents/backend/app.py`, adds happy-path + 404 tests to `agents/tests/test_app.py`, runs `pytest agents/tests/ -v`, and reports the result.
 
-7. **Click the "Implement this plan" handoff button** that renders below the scaffolder's response. Control transfers to the **Agent** built-in agent with the canned prompt pre-filled. Agent then executes — editing `agents/backend/app.py`, adding tests to `agents/tests/test_app.py`, and running `pytest` until green.
-
-> ✅ **You should now see:** `endpoint-scaffolder` in the agent picker with its description visible · a numbered plan from your custom agent · a clickable **Implement this plan** button on the response · after the handoff, `pytest agents/tests/ -v` passes (now with at least 5 tests counting the new spots-left coverage) · `curl http://127.0.0.1:8000/activities/Chess%20Club/spots-left` returns `{"spots_left": <int>}`.
+> ✅ **You should now see:** `endpoint-scaffolder` in the agent picker with its description visible · the new endpoint added to `app.py` · new tests in `test_app.py` · `pytest agents/tests/ -v` passes (now with at least 5 tests counting the new spots-left coverage) · `curl http://127.0.0.1:8000/activities/Chess%20Club/spots-left` returns `{"spots_left": <int>}`.
 
 ---
 
@@ -366,17 +358,16 @@ You'll create a **read-only** custom agent that reviews code but never edits —
 
    ```yaml
    ---
+   name: code-quality-reviewer
    description: Review code for blocking issues, security vulnerabilities, and logic errors. Read-only — no edits, no style nits.
    tools: [codebase, findTestFiles, search]
    model: gpt-5
-   user-invocable: true
-   disable-model-invocation: true
    ---
    ```
 
    Key points:
+   - **`name:`** identifies the agent in the picker.
    - **Tools: `[codebase, findTestFiles, search]` only.** NO `editFiles`, NO `runCommands`. This is the security boundary — the agent can read, but cannot modify anything.
-   - **No handoffs.** This is a terminal reviewer — it outputs a report and stops.
 
 3. **Below the frontmatter, paste this system-prompt body verbatim:**
 
@@ -421,21 +412,16 @@ You'll create a custom agent that writes **only** test files under `agents/tests
 
    ```yaml
    ---
+   name: test-author
    description: Write test files for the agents/ app. Creates or modifies files ONLY under agents/tests/.
    tools: [codebase, editFiles, runCommands, findTestFiles]
    model: gpt-5
-   user-invocable: true
-   disable-model-invocation: true
-   handoffs:
-     - agent: agent
-       label: Fix the bug this test caught
-       prompt: "The test above is failing because of a real bug in production code. Fix the bug, then re-run pytest agents/tests/ -v until green."
    ---
    ```
 
    Key points:
+   - **`name:`** identifies the agent in the picker.
    - **Tools: includes `editFiles` and `runCommands`**, but the system prompt will constrain edits to `agents/tests/` only.
-   - **Handoff: back to Agent** if a test reveals a real bug.
 
 3. **Below the frontmatter, paste this system-prompt body verbatim:**
 
@@ -446,7 +432,7 @@ You'll create a custom agent that writes **only** test files under `agents/tests
    2. **Use `fastapi.testclient.TestClient`.** Mirror the existing test style in `agents/tests/test_app.py`.
    3. **Every test you write MUST be runnable.** Finish each session by running `pytest agents/tests/ -v` and reporting pass/fail counts.
    4. **Prefer adding edge-case tests over duplicating happy paths the suite already covers.** Read the existing tests first.
-   5. **If you discover a real bug while writing a test**, leave the failing test in place and use the "Fix the bug this test caught" handoff to ask Agent to fix the production code. Do NOT silently skip the test or modify production code yourself.
+   5. **If a test reveals a real bug**, leave the failing test in place and report the bug to the user. Do NOT silently skip the test or modify production code yourself.
    ````
 
 4. **Save the file.** It should now be visible in the agent picker as `test-author`.
