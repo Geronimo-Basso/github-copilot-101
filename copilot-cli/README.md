@@ -123,6 +123,7 @@ These are the CLI-specific commands you can use in interactive mode. We'll explo
 
 **Core commands:**
 - `/plan` — create an implementation plan (doesn't execute)
+  > 📌 **Note:** `/plan` is a slash command for one-off planning. Distinct from **plan mode** (a persistent session state toggled with `--plan` flag or Shift+Tab). See the [Q&A section](#qa) for the full distinction.
 - `/yolo` — allow all tools without approval prompts
 - `/fleet` — parallel subagent execution
 - `/research` — deep investigation (GitHub + web search)
@@ -170,10 +171,10 @@ copilot --version
 **Step 2: Navigate to the `app/` folder**
 
 ```bash
-cd copilot-cli/app/
+cd github-copilot-101/copilot-cli/app/
 ```
 
-This ensures the CLI has the FastAPI app from Labs 1–3 as context for the next step.
+This ensures the CLI has the FastAPI app from this lab's workspace as context for the next step. The full path works whether or not you're already in the repo.
 
 **Step 3: Start interactive mode and authenticate**
 
@@ -182,8 +183,8 @@ copilot
 ```
 
 On first run, you'll see:
-- A **trust folder prompt** — type `yes` to trust the `app/` directory (this path is saved in the CLI's `trustedFolders` config)
-- A `/login` prompt or device-flow instructions — follow the prompts to open your browser and authenticate with GitHub
+- A **trust folder prompt** — type `yes` to trust the `app/` directory.
+- An **authentication prompt** — the CLI will either show a `/login` command suggestion or device-flow instructions directly (a code + URL). Either way, open the URL in your browser, enter the code, and authenticate with GitHub.
 
 Once authenticated, you'll see a chat prompt (`>`).
 
@@ -195,7 +196,7 @@ At the `>` prompt, type:
 What does @backend/app.py do?
 ```
 
-> ✅ **You should now see:** A summary of the FastAPI app — it manages activity signups for a university, has endpoints like `/api/v1/register` and `/activities`, and includes validation for duplicate emails and capacity checks (features added in Lab 3 Exercise A).
+> ✅ **You should now see:** A summary of the FastAPI app — it manages activity signups for Mergington High School, with endpoints like `GET /activities` and `POST /activities/{activity_name}/signup` for viewing and signing up for extracurricular activities.
 
 Type `exit` or press `Ctrl+C` to quit.
 
@@ -216,6 +217,8 @@ copilot
 
 **Step 2: Add context with `@` mentions**
 
+> 📌 **Note:** `@.` means "current directory" — it adds all files in the folder to context (use carefully in large directories).
+
 Try these prompts one by one:
 
 ```prompt
@@ -230,7 +233,7 @@ Try these prompts one by one:
 > Review @. for security issues
 ```
 
-> 📌 **Note:** `@.` means "current directory" — it adds all files in the folder to context (use carefully in large directories).
+> ✅ **Expected output:** You should see the CLI summarize files in the backend folder, including `app.py` and its endpoints.
 
 **Step 3: Inspect context usage**
 
@@ -301,7 +304,7 @@ At the prompt:
 > /plan Add a GET /activities/{name}/description endpoint that returns the activity description
 ```
 
-The CLI generates a numbered plan (files to touch, steps to take) but **doesn't execute** anything. Review the plan, then type `go` to execute, or `exit` to cancel.
+The CLI generates a numbered plan (files to touch, steps to take) but **doesn't execute** anything. Review the plan, then type `go` (no slash — it's a literal response at the plan prompt) to execute, or `exit` to cancel.
 
 **Step 2: Research a design decision**
 
@@ -374,6 +377,8 @@ At the prompt:
 ```
 
 The CLI will refuse to execute `git push` and prompt you to approve or deny manually.
+
+> ✅ **You should now see:** The CLI attempts the denied operation (git push), and you see a deny prompt confirming that the permission constraint worked as intended.
 
 Type `exit`, then try the next step.
 
@@ -579,7 +584,7 @@ Type `exit` to quit.
 You can list all custom agents with:
 
 ```prompt
-> /agent
+> /agents
 ```
 
 > 📌 **Note:** Custom agents in the CLI are user-level only (`~/.copilot/agents/`). There is no `.github/agents/` equivalent in the CLI at time of writing.
