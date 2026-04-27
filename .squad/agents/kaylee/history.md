@@ -50,3 +50,27 @@ Book added Lab 4's first Q&A entry (Plan mode vs `/plan` command) and establishe
 ## 2026-04-27 — Simon's Lab 4 friction log shipped; actionable feedback for Lab 4 revisions
 
 Simon (new Learner agent) completed first-time-reader dry-run of Lab 4. Friction log available at `.squad/files/simon-lab4-friction-log.md`. Key findings: 1 blocker (Exercise A Step 4 references Lab 3 features without prerequisite), 5 confusing moments (plan mode placement in theory, interaction prompt clarity), 2 nits. **Action for you:** Exercise A Step 4 fix is critical (Lab 3 context assumption breaks first-timers). Consider Simon's suggested fixes for interaction clarity (`go` vs `/go`, `/agent` vs `/agents` consistency, expected output for Exercise E). Simon's tone is respectful, specific, and includes "what worked well" notes for framing feedback positively.
+
+## 2026-04-27 — Lab 4 expected output fixed (Exercise A, Step 4)
+
+**Issue:** README line 198 described expected CLI output for `@backend/app.py` query with features from Lab 3 (university app with `/api/v1/register`, duplicate-email validation, capacity checks). But `copilot-cli/app/backend/app.py` is a fresh starter — Mergington High School activity signup app with only `GET /activities` and `POST /activities/{activity_name}/signup` endpoints.
+
+**Fix applied:** Rewrote line 198 expected output to match actual local code: "A summary of the FastAPI app — it manages activity signups for Mergington High School, with endpoints like `GET /activities` and `POST /activities/{activity_name}/signup`…"
+
+**Principle:** Lab 4 inherits Lab 3 *knowledge* (conceptual understanding of agents, Copilot capabilities), but NOT code. The `copilot-cli/` app is code-self-contained. Expected outputs in READMEs must describe the actual local codebase, never features from prior labs' evolved code. This prevents first-timers from verifying impossible outputs.
+
+**Also updated:** Line 176 clarified "from this lab's workspace" instead of "from Labs 1–3" to reinforce this is an independent app copy.
+
+## 2026-04-27 — Lab 4 friction round 1: 7 surgical fixes to README
+
+Applied all 7 non-blocker fixes flagged by Simon's friction log:
+
+1. **Fix 1 — Pre-Lab path clarity (line 173):** Changed `cd copilot-cli/app/` to `cd github-copilot-101/copilot-cli/app/` with added note that full path works regardless of repo entry point.
+2. **Fix 2 — Plan mode theory (line ~123):** Added inline note distinguishing `/plan` slash command (one-off) from **plan mode** (persistent session state, toggled with `--plan` flag), pointing to Q&A for full explanation.
+3. **Fix 3 — Auth flow clarity (line 184-186):** Rewrote device-flow vs `/login` bullets to make clear they're the same thing (CLI version difference), introducing the "either way, authenticate with GitHub" model.
+4. **Fix 4 — Exercise B `@.` positioning (line ~220-231):** Moved `@.` explanation note to **before** the prompts using it, and added expected-output hint after prompts (learner should see CLI summarize backend files).
+5. **Fix 5 — Exercise C `go` vs `/go` clarity (line 304):** Clarified that `go` is literal text input at plan prompt, not a slash command, with phrasing "(no slash — it's a literal response at the plan prompt)".
+6. **Fix 6 — Exercise D Step 2 expected output (line ~378):** Added explicit `✅ You should now see` block describing the deny prompt when permission constraint kicks in.
+7. **Fix 7 — `/agent` vs `/agents` consistency (line 582):** Changed `/agent` to `/agents` (plural) to match the actual CLI command.
+
+**Pattern observed:** Most friction stemmed from ambiguous **interaction points** — unclear whether input is a slash command, literal text, or browser action. Precision in formatting (backticks for literals, clear phrasing on "type X") eliminates guesswork for first-timers. All fixes preserved tone, emoji style, and existing structure.
