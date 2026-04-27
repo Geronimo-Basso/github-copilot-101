@@ -42,3 +42,11 @@ Wrote `copilot-cli/README.md` (~977 lines, 31KB) per verified AGENDA.md v3. Stru
 **Charter addendum:** Lab 4 charter conventions + no-overexplain directive applied automatically in spawn prompt. Quality over wordcount maintained.
 
 **Status:** Awaiting Zoe review + Geronimo final approval.
+
+## 2026-04-27 — Lab 4 Q&A section pattern established (cross-agent note)
+
+Book added Lab 4's first Q&A entry (Plan mode vs `/plan` command) and established reusable template for future questions. Format: short answer → detailed terms (bullets) → "📌 When to use which" guidance → source links. Pattern documented in `.squad/decisions.md` § Lab 4 Q&A Section Pattern. Your README (lines 879–904) carries the first exemplar; future questions will follow this structure.
+
+## 2026-04-27 — Simon's Lab 4 friction log shipped; actionable feedback for Lab 4 revisions
+
+Simon (new Learner agent) completed first-time-reader dry-run of Lab 4. Friction log available at `.squad/files/simon-lab4-friction-log.md`. Key findings: 1 blocker (Exercise A Step 4 references Lab 3 features without prerequisite), 5 confusing moments (plan mode placement in theory, interaction prompt clarity), 2 nits. **Action for you:** Exercise A Step 4 fix is critical (Lab 3 context assumption breaks first-timers). Consider Simon's suggested fixes for interaction clarity (`go` vs `/go`, `/agent` vs `/agents` consistency, expected output for Exercise E). Simon's tone is respectful, specific, and includes "what worked well" notes for framing feedback positively.
