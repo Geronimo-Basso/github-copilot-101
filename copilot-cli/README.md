@@ -27,6 +27,8 @@ Terminal-native AI assistant that runs in bash/zsh/PowerShell. Use it interactiv
   - [MCP — CLI config paths (read-through)](#mcp--cli-config-paths-read-through)
 - [Part 4 — Programmatic & Automation](#part-4--programmatic--automation)
   - [Exercise F — Headless invocation](#exercise-f--headless-invocation)
+- [Q&A](#qa)
+- [What's Next?](#whats-next)
 
 ## What You'll Learn
 
@@ -871,6 +873,35 @@ cd copilot-cli/app/
 > ✅ **You should now see:** `review-report.md` created autonomously with a security review of the backend code.
 
 > 📌 **Key pattern:** Headless invocation + `--allow-all-tools` (or specific permission patterns) = fully automated code reviews, test generation, or refactoring in CI/CD.
+
+---
+
+## Q&A
+
+### **Q: What is the difference between using "Plan mode" and the `/plan` slash command in another mode (like interactive or autopilot)?**
+
+**Short answer:** Plan mode is a persistent interactive state where every prompt generates a structured plan before execution. The `/plan` slash command is a one-off request within any mode that creates a plan without executing it.
+
+**Plan mode (persistent state):**
+- Entered with `copilot --plan` flag or by pressing **Shift+Tab** in an interactive session
+- A mode of the CLI where Copilot builds structured implementation plans for every request
+- Asks clarifying questions to understand scope before planning
+- Plans are generated before any code is written
+- Stays in this mode until you toggle back with Shift+Tab or restart
+
+**`/plan` slash command (one-off request):**
+- Typed as `/plan <task description>` within any interactive or autopilot session
+- Generates a single plan for the specified task
+- Does not change the session mode — you remain in interactive/autopilot mode
+- Useful when you want a plan once without switching the entire session's behavior
+
+**📌 When to use which:**
+- Use **plan mode** (Shift+Tab) when you want to iterate on planning across multiple tasks and stay in a "plan-first" mindset for the entire session
+- Use **`/plan` command** when you're in a regular interactive session and want a one-off plan before deciding whether to proceed
+
+**Sources:**
+- [About GitHub Copilot CLI - Modes of use](https://docs.github.com/en/copilot/concepts/agents/about-copilot-cli#modes-of-use)
+- [Use GitHub Copilot CLI - Use plan mode](https://docs.github.com/en/copilot/how-tos/use-copilot-agents/use-copilot-cli#use-plan-mode)
 
 ---
 
