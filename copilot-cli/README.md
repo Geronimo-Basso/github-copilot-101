@@ -33,11 +33,11 @@ Terminal-native AI assistant that runs in bash/zsh/PowerShell. Use it interactiv
 
 By the end of this lab you will be able to:
 
-- **Use Copilot CLI interactively and programmatically** — from REPL sessions with slash commands to headless one-shot invocations with JSON output.
+- **Use Copilot CLI interactively and programmatically** — from interactive sessions with slash commands to headless one-shot invocations with JSON output.
 - **Master context management** — use `@` mentions, `/context`, `/compact`, and `/clear` to control what the model sees and how much of your token budget is left.
 - **Apply permission patterns** — allowlist/denylist tools and shell commands with patterns like `shell(git push)`, `shell(git:*)`, `MyMCP(tool_name)`, and `url(domain)`.
 - **Customize the CLI** — add custom agents (`.agent.md`), invoke skills via `@skill:name`, explore experimental memory with `/chronicle`, and install plugins from marketplaces.
-- **Script headless workflows** — use `copilot -p` with `--output-format json` for CI/CD pipelines, automated PR reviews, and scheduled codebase audits.
+- **Script headless workflows** — use `copilot -p` for CI/CD pipelines, automated PR reviews, and scheduled codebase audits.
 
 **Core differentiation:** Terminal-native AI assistant with scripting + plugin capabilities VS Code cannot provide.
 
@@ -49,11 +49,9 @@ Get the boring stuff out of the way before the clock starts.
 
 ### Required ✅
 
-1. **Have a GitHub account with Copilot access.** You'll need it for device-flow auth in Exercise A.
+1. **Open this repository in your terminal.** All commands assume you're starting from the workspace root (`github-copilot-101/`).
 
-2. **Open this repository in your terminal.** All commands assume you're starting from the workspace root (`github-copilot-101/`).
-
-3. **Check that you have one of these package managers installed:**
+1. **Check that you have one of these package managers installed:**
 
    | Platform | Command to verify |
    |----------|-------------------|
@@ -62,10 +60,6 @@ Get the boring stuff out of the way before the clock starts.
    | Windows (winget) | `winget --version` |
 
    If none of these are available, install Node.js (which includes npm) from [nodejs.org](https://nodejs.org/).
-
-4. **Confirm the `agents/` app from Labs 1–3 is available.** You'll use it as context in several exercises. If you skipped Labs 1–3, the app should still be present — just verify `agents/backend/app.py` exists.
-
-> ✅ **You should now see:** A working package manager (brew, npm, or winget) and the `agents/backend/app.py` file in your workspace.
 
 ---
 
@@ -81,7 +75,7 @@ Copilot CLI is a **terminal-native AI assistant** that runs in bash, zsh, or Pow
 - Runs in your terminal (no IDE required)
 - Device-flow authentication on first run (opens browser to authenticate)
 - Three modes:
-  - **`interactive`** — REPL session (default when you run `copilot`)
+  - **`interactive`** — interactive session (default when you run `copilot`)
   - **`plan`** — generates a plan without executing (for review before action)
   - **`autopilot`** — autonomous multi-turn execution (keeps looping until done)
 
@@ -92,7 +86,6 @@ Copilot CLI is a **terminal-native AI assistant** that runs in bash, zsh, or Pow
 - CI/CD pipelines (GitHub Actions, Jenkins)
 - Repo-wide refactors driven from shell
 - Quick one-off tasks already in terminal
-- Headless code review on PRs (scripted)
 
 **Reach for VS Code when:**
 - Multi-file inline editing with visual feedback
@@ -105,26 +98,22 @@ Copilot CLI is a **terminal-native AI assistant** that runs in bash, zsh, or Pow
 ### 1.3 Interactive vs programmatic
 
 ```bash
-# Interactive REPL (default mode)
+# Interactive (default mode)
 copilot
 
 # Programmatic (one-shot, exits when done)
 copilot -p "Generate tests for @agents/backend/app.py"
-
-# JSON output for parsing in scripts
-copilot -p "Summarize @agents/backend/" --output-format json
 ```
 
 **Interactive mode:**
-- Opens a REPL session
+- Opens an interactive session that stays open
 - Accepts multiple prompts in a conversation
 - Slash commands available (`/plan`, `/clear`, `/context`)
 - Type `exit` or `Ctrl+C` to quit
 
 **Programmatic mode:**
 - One prompt, exits when done
-- No REPL — output goes to stdout
-- Use `--output-format json` for structured output (one JSON object per line — JSONL)
+- Output goes to stdout (no interactive session)
 - Perfect for CI/CD automation
 
 ### 1.4 Slash commands overview
@@ -424,7 +413,7 @@ cd agents/
 copilot --mode autopilot -i "Build a waitlist feature in @agents/. Add a backend endpoint for waitlist signup and update the frontend to show 'Join Waitlist' when an activity is full."
 ```
 
-> 📌 **`--mode autopilot` vs `-i` flag:** `--mode autopilot` enables autonomous multi-turn execution. `-i` passes the initial prompt inline (no REPL — the CLI runs the prompt and exits when done).
+> 📌 **`--mode autopilot` vs `-i` flag:** `--mode autopilot` enables autonomous multi-turn execution. `-i` passes the initial prompt inline and exits when done.
 
 **Step 2: Observe the loop**
 
@@ -833,13 +822,7 @@ cd agents/
 copilot -p "Generate tests for @backend/app.py"
 ```
 
-The CLI executes the prompt and exits when done. No REPL.
-
-**JSON output (JSONL — one JSON object per line):**
-
-```bash
-copilot -p "Summarize @backend/" --output-format json
-```
+The CLI executes the prompt and exits when done.
 
 **Combine with permission patterns for safety:**
 
@@ -899,8 +882,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           copilot -p "Review the diff in this PR for security and best practices. Write to review.md" \
-            --allow-all-tools \
-            --output-format json
+            --allow-all-tools
           cat review.md >> $GITHUB_STEP_SUMMARY
 ```
 
@@ -910,7 +892,7 @@ jobs:
 - **Scheduled codebase audits** — weekly cron job that reviews the entire codebase
 - **Test generation in CI** — auto-generate tests for new endpoints on every push
 
-> ✅ **You should now see** (mentally): How to authenticate the CLI in a workflow (via `GITHUB_TOKEN` env var) and how `--output-format json` enables downstream parsing in CI/CD pipelines.
+> ✅ **You should now see** (mentally): How to authenticate the CLI in a workflow (via `GITHUB_TOKEN` env var) and how to invoke it headlessly to write reports for downstream CI/CD steps.
 
 > 📌 **Key takeaway:** The CLI is a **first-class CI/CD citizen**. Use it to automate code reviews, test generation, and refactoring in your pipelines.
 
@@ -918,13 +900,13 @@ jobs:
 
 ## What's Next?
 
-Congratulations! You've mastered the GitHub Copilot CLI — from interactive REPL sessions to headless automation.
+Congratulations! You've mastered the GitHub Copilot CLI — from interactive sessions to headless automation.
 
 **You now know how to:**
 
 1. ✅ Use the CLI interactively with slash commands, context management, and permission patterns
 2. ✅ Customize the CLI with custom agents, skills, plugins, and hooks
-3. ✅ Script headless workflows with `copilot -p` and `--output-format json` for CI/CD
+3. ✅ Script headless workflows with `copilot -p` for CI/CD
 4. ✅ Apply permission patterns to control what tools the model can use
 5. ✅ Explore experimental features like `/chronicle` for session insights
 
