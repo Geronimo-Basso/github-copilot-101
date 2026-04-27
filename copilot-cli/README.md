@@ -102,7 +102,7 @@ Copilot CLI is a **terminal-native AI assistant** that runs in bash, zsh, or Pow
 copilot
 
 # Programmatic (one-shot, exits when done)
-copilot -p "Generate tests for @agents/backend/app.py"
+copilot -p "Generate tests for @backend/app.py"
 ```
 
 **Interactive mode:**
@@ -166,10 +166,10 @@ copilot --version
 
 > ✅ **You should now see:** A version string (e.g., `1.0.32` or later).
 
-**Step 2: Navigate to the `agents/` folder**
+**Step 2: Navigate to the `app/` folder**
 
 ```bash
-cd agents/
+cd copilot-cli/app/
 ```
 
 This ensures the CLI has the FastAPI app from Labs 1–3 as context for the next step.
@@ -181,7 +181,7 @@ copilot
 ```
 
 On first run, you'll see:
-- A **trust folder prompt** — type `yes` to trust the `agents/` directory (this path is saved in the CLI's `trustedFolders` config)
+- A **trust folder prompt** — type `yes` to trust the `app/` directory (this path is saved in the CLI's `trustedFolders` config)
 - A `/login` prompt or device-flow instructions — follow the prompts to open your browser and authenticate with GitHub
 
 Once authenticated, you'll see a chat prompt (`>`).
@@ -191,7 +191,7 @@ Once authenticated, you'll see a chat prompt (`>`).
 At the `>` prompt, type:
 
 ```prompt
-What does @agents/backend/app.py do?
+What does @backend/app.py do?
 ```
 
 > ✅ **You should now see:** A summary of the FastAPI app — it manages activity signups for a university, has endpoints like `/api/v1/register` and `/activities`, and includes validation for duplicate emails and capacity checks (features added in Lab 3 Exercise A).
@@ -209,7 +209,7 @@ Use `@` mentions and slash commands to control context.
 **Step 1: Start interactive mode**
 
 ```bash
-cd agents/
+cd copilot-cli/app/
 copilot
 ```
 
@@ -218,11 +218,11 @@ copilot
 Try these prompts one by one:
 
 ```prompt
-> Explain @agents/backend/app.py
+> Explain @backend/app.py
 ```
 
 ```prompt
-> What endpoints are in @agents/backend/?
+> What endpoints are in @backend/?
 ```
 
 ```prompt
@@ -290,7 +290,7 @@ The CLI ships with several slash commands for specialized workflows. This exerci
 **Step 1: Use `/plan` to preview work**
 
 ```bash
-cd agents/
+cd copilot-cli/app/
 copilot
 ```
 
@@ -346,7 +346,7 @@ The CLI uses **permission patterns** to control what tools the model can use. Pa
 **Step 1: Allow all tools (no prompts)**
 
 ```bash
-cd agents/
+cd copilot-cli/app/
 copilot --allow-all-tools
 ```
 
@@ -404,13 +404,13 @@ Type `exit` to quit.
 
 Now tie everything together: use the CLI in **autopilot mode** to build a feature end-to-end, leveraging context management, slash commands, and tool permissions.
 
-**The task:** Add a waitlist feature to the `agents/` app. When an activity is full (31st student tries to sign up), show a "Join Waitlist" button in the frontend instead of "Sign Up".
+**The task:** Add a waitlist feature to the `app/` FastAPI app. When an activity is full (31st student tries to sign up), show a "Join Waitlist" button in the frontend instead of "Sign Up".
 
 **Step 1: Run the task in autopilot mode**
 
 ```bash
-cd agents/
-copilot --mode autopilot -i "Build a waitlist feature in @agents/. Add a backend endpoint for waitlist signup and update the frontend to show 'Join Waitlist' when an activity is full."
+cd copilot-cli/app/
+copilot --mode autopilot -i "Build a waitlist feature in @backend and @frontend. Add a backend endpoint for waitlist signup and update the frontend to show 'Join Waitlist' when an activity is full."
 ```
 
 > 📌 **`--mode autopilot` vs `-i` flag:** `--mode autopilot` enables autonomous multi-turn execution. `-i` passes the initial prompt inline and exits when done.
@@ -420,8 +420,8 @@ copilot --mode autopilot -i "Build a waitlist feature in @agents/. Add a backend
 The CLI will:
 1. Read the existing code
 2. Plan the changes (backend endpoint + frontend logic)
-3. Edit `agents/backend/app.py` (add `/activities/{name}/waitlist` endpoint)
-4. Edit `agents/frontend/index.html` or `agents/frontend/script.js` (add waitlist button logic)
+3. Edit `app/backend/app.py` (add `/activities/{name}/waitlist` endpoint)
+4. Edit `app/frontend/index.html` or `app/frontend/script.js` (add waitlist button logic)
 5. Run tests (if they exist) or start the server to verify
 6. Iterate if anything fails
 
@@ -430,10 +430,10 @@ The CLI will:
 Start the server:
 
 ```bash
-uvicorn agents.backend.app:app --reload
+uvicorn backend.app:app --reload
 ```
 
-Open `agents/frontend/index.html` in your browser (or use Live Server). Try to sign up for an activity with 30 participants already signed up.
+Open `app/frontend/index.html` in your browser (or use Live Server). Try to sign up for an activity with 30 participants already signed up.
 
 > ✅ **You should now see:** The 31st signup attempt shows a "Join Waitlist" button instead of "Sign Up". The backend has a new `/activities/{name}/waitlist` endpoint (verify with `curl -X POST http://127.0.0.1:8000/activities/Chess%20Club/waitlist?email=test@example.com`).
 
@@ -477,7 +477,7 @@ echo "Always prefer list comprehensions over map/filter in Python." > ~/.copilot
 **Step 2: Test the instruction**
 
 ```bash
-cd agents/
+cd copilot-cli/app/
 copilot
 ```
 
@@ -543,7 +543,7 @@ Always provide specific file paths and line numbers, plus an actionable fix per 
 **Step 2: Invoke the custom agent**
 
 ```bash
-cd agents/
+cd copilot-cli/app/
 copilot
 ```
 
@@ -818,7 +818,7 @@ The CLI's killer feature: headless invocation for CI/CD, PR reviews, and schedul
 **One-shot invocation:**
 
 ```bash
-cd agents/
+cd copilot-cli/app/
 copilot -p "Generate tests for @backend/app.py"
 ```
 
@@ -851,7 +851,7 @@ chmod +x review-script.sh
 **Step 2: Run the script**
 
 ```bash
-cd agents/
+cd copilot-cli/app/
 ./review-script.sh
 ```
 
