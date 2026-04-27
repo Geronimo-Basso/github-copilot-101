@@ -517,7 +517,21 @@ description: "Specialized code review agent for FastAPI codebases. Use when revi
 
 > 📌 **Key difference from VS Code:** The `tools` field is **not required** by the CLI — agents inherit available tools from the session. Only `name` and `description` are confirmed required.
 
-**Step 1: Create a custom agent manually**
+**Step 1: Create a custom agent**
+
+You have two ways to create one:
+
+**Option A — Guided (recommended for first-timers)**
+
+Inside an interactive `copilot` session, run:
+
+```prompt
+> /agents
+```
+
+Copilot walks you through naming the agent, writing its description, and dropping the file in `~/.copilot/agents/` for you. Pick this when you want the CLI to scaffold the front-matter and persona prompt step by step.
+
+**Option B — Manual**
 
 ```bash
 mkdir -p ~/.copilot/agents
