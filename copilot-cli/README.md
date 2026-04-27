@@ -27,7 +27,6 @@ Terminal-native AI assistant that runs in bash/zsh/PowerShell. Use it interactiv
   - [MCP — CLI config paths (read-through)](#mcp--cli-config-paths-read-through)
 - [Part 4 — Programmatic & Automation](#part-4--programmatic--automation)
   - [Exercise F — Headless invocation](#exercise-f--headless-invocation)
-  - [Exercise G — CI/CD integration](#exercise-g--cicd-integration)
 
 ## What You'll Learn
 
@@ -83,7 +82,7 @@ Copilot CLI is a **terminal-native AI assistant** that runs in bash, zsh, or Pow
 
 **Reach for CLI when:**
 - SSH'd into a server (no IDE available)
-- CI/CD pipelines (GitHub Actions, Jenkins)
+- CI/CD pipelines
 - Repo-wide refactors driven from shell
 - Quick one-off tasks already in terminal
 
@@ -875,43 +874,6 @@ cd copilot-cli/app/
 
 ---
 
-### Exercise G — CI/CD integration
-
-📖 **Read-through**
-
-Here's a GitHub Actions snippet that uses the CLI for automated PR reviews:
-
-```yaml
-name: Copilot Code Review
-on: [pull_request]
-jobs:
-  review:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - name: Install Copilot CLI
-        run: npm install -g @github/copilot
-      - name: Review PR
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: |
-          copilot -p "Review the diff in this PR for security and best practices. Write to review.md" \
-            --allow-all-tools
-          cat review.md >> $GITHUB_STEP_SUMMARY
-```
-
-**Use cases:**
-- **PR reviews** — automated security and best-practices checks on every PR
-- **Pre-commit checks** — run locally in git hooks (e.g., `pre-commit` script)
-- **Scheduled codebase audits** — weekly cron job that reviews the entire codebase
-- **Test generation in CI** — auto-generate tests for new endpoints on every push
-
-> ✅ **You should now see** (mentally): How to authenticate the CLI in a workflow (via `GITHUB_TOKEN` env var) and how to invoke it headlessly to write reports for downstream CI/CD steps.
-
-> 📌 **Key takeaway:** The CLI is a **first-class CI/CD citizen**. Use it to automate code reviews, test generation, and refactoring in your pipelines.
-
----
-
 ## What's Next?
 
 Congratulations! You've mastered the GitHub Copilot CLI — from interactive sessions to headless automation.
@@ -940,7 +902,6 @@ Congratulations! You've mastered the GitHub Copilot CLI — from interactive ses
 
 - **Multi-agent workflows:** Chain custom agents in scripts (e.g., `fastapi-code-reviewer` → `test-author` → `endpoint-scaffolder`)
 - **Chronicle-driven improvements:** Run `/chronicle improve` weekly to refine your custom instructions based on real usage patterns
-- **CI/CD integration:** Add the PR review workflow from Exercise G to your own repositories
 - **Custom hooks:** Once event types are documented, write hooks to auto-format code before sessions or auto-commit after successful test runs
 
 **Further reading:**
