@@ -16,3 +16,7 @@ Kaylee addressed all 8 of Simon's stuck-points via two targeted passes:
 - **Round 1 polish:** 7 non-blocker friction items fixed — path clarity, plan mode vs `/plan` distinction, command vs literal text disambiguation, output validation examples, `/agents` consistency.
 
 Decisions merged to `.squad/decisions.md`. Lab 4 README ready for QA pass (Jayne).
+
+## 2026-05-04 — River retired; merged into Book
+
+River (Copilot Expert — Patterns & Prompting) retired. Role and knowledge consolidated into Book, who is now unified Copilot Expert covering platform, surfaces, AND patterns/prompting. For friction observations related to Copilot behavior, prompting feedback, or pattern clarity, route to Book.

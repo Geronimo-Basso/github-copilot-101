@@ -29,6 +29,10 @@
 - Resolved 5 of River's 6 open questions; Q2 (terminal access in lab env) deferred to Kaylee as pre-lab checklist.
 - Locked plan written to `.squad/decisions/inbox/zoe-lab3-locked-plan.md` with explicit handoff brief to Kaylee.
 
+## 2026-05-04 — River retired; merged into Book
+
+River (Copilot Expert — Patterns & Prompting) retired. Role and knowledge consolidated into Book, who is now unified Copilot Expert covering platform, surfaces, AND patterns/prompting. For prompting questions, pattern guidance, or agent-mode walkthrough help, route to Book.
+
 ## 2026-04-20 — Lab 3 plan AMENDED (MCP block: consume + create)
 
 - Per Geronimo's directive (`copilot-directive-mcp-block.md`), amended the locked plan in place: replaced Block 3 / Exercise C wholesale with Book's consume+create design (filesystem MCP optional, `agents/mcp/activities_server.py` required). Budget rebalanced: Block 3 hands-on 20→25, Exercise A 22→20, Exercise B 10→8; totals now theory 15 / hands-on 68 / intro+wrap 17 — within charter.

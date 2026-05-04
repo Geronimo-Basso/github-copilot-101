@@ -13,8 +13,7 @@
 | Name | Role | Charter | Status |
 |------|------|---------|--------|
 | Zoe | Lead | `.squad/agents/zoe/charter.md` | ✅ Active |
-| Book | Copilot Expert (Platform & Surfaces) | `.squad/agents/book/charter.md` | ✅ Active |
-| River | Copilot Expert (Patterns & Prompting) | `.squad/agents/river/charter.md` | ✅ Active |
+| Book | Copilot Expert (Platform, Surfaces, Patterns & Prompting) | `.squad/agents/book/charter.md` | ✅ Active |
 | Kaylee | Lab Builder | `.squad/agents/kaylee/charter.md` | ✅ Active |
 | Jayne | Tester | `.squad/agents/jayne/charter.md` | ✅ Active |
 | Simon | Learner | `.squad/agents/simon/charter.md` | ✅ Active |

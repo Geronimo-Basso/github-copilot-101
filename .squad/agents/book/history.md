@@ -104,3 +104,29 @@
 - Kaylee added optional Exercise E: Package agents and MCP servers as VS Code plugin.
 - Three sub-exercises: E.1 theory, E.2 hands-on scaffold, E.3 discovery/distribution. Committed `1cfde5a`.
 
+
+---
+
+## Absorbed from River (2026-05-04)
+
+> River (Copilot Expert — Patterns & Prompting) was retired and merged into Book. Below: River's project knowledge that Book now owns.
+
+### 2026-04-20 — Lab 3 hands-on design (originally River)
+- Read `agents/` codebase (FastAPI + vanilla JS school activities app). Found 10 concrete improvement opportunities; key bugs: no duplicate-signup guard, no capacity check, orphan `activities.json` not read by `app.py`, no tests, signup via query-string instead of body.
+- Designed 3 cumulative hands-on exercises (~55 min): (1) multi-file bug fix + pytest scaffold, (2) plan-first end-to-end "unregister" feature across backend + frontend + tests, (3) custom chatmode `endpoint-scaffolder` at `.github/chatmodes/endpoint-scaffolder.chatmode.md` with constrained tool list. Stretch Exercise 4 = MCP.
+- Output drop: `.squad/decisions/inbox/river-lab3-handson-design.md`.
+
+### Five agent-mode prompting patterns (originally River — canonical reference)
+Each pattern needs a concrete before/after example drawn from a real codebase, not toy code.
+
+1. **Plan-first** — Ask Copilot to produce a written plan before any edits. Approve the plan, then let it execute. Use when the change spans 2+ files or layers.
+2. **Verify-by-running** — After Copilot makes changes, instruct it to run the tests / start the server / hit the endpoint and report the actual output. Pasting back compiler errors loops faster than re-reading the diff.
+3. **Constrain blast radius** — Explicitly scope the request: "only modify `routes/auth.py` and its tests; do not touch the frontend." Prevents Copilot from helpfully fixing unrelated things.
+4. **Checklist** — For multi-step tasks, ask Copilot to produce a numbered checklist and tick items as it goes. Recovers gracefully from interruptions.
+5. **Diff-before-commit** — Before committing, ask Copilot to summarize the diff in plain English and flag anything risky. Catches accidental scope creep.
+
+### Lab teaching philosophy (originally River)
+- A good lab teaches **judgment**, not just keystrokes.
+- Always teach the failure mode alongside the happy path — learners need to recognize when Copilot is wrong.
+- Will challenge a "best practice" if the evidence is thin. Try the prompt, observe the output, write from evidence.
+

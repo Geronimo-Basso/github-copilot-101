@@ -74,3 +74,7 @@ Applied all 7 non-blocker fixes flagged by Simon's friction log:
 7. **Fix 7 — `/agent` vs `/agents` consistency (line 582):** Changed `/agent` to `/agents` (plural) to match the actual CLI command.
 
 **Pattern observed:** Most friction stemmed from ambiguous **interaction points** — unclear whether input is a slash command, literal text, or browser action. Precision in formatting (backticks for literals, clear phrasing on "type X") eliminates guesswork for first-timers. All fixes preserved tone, emoji style, and existing structure.
+
+## 2026-05-04 — River retired; merged into Book
+
+River (Copilot Expert — Patterns & Prompting) retired. Role and knowledge consolidated into Book, who is now unified Copilot Expert covering platform, surfaces, AND patterns/prompting. For prompting questions, pattern guidance, or agent-mode review, route to Book.

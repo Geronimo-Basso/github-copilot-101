@@ -64,3 +64,7 @@ Simon cast as first-time-learner persona. Dry-ran Lab 4 with prerequisites only 
 ### 2026-04-27 — Lab 4 Round 1 polish complete; ready for QA
 
 Simon's Lab 4 dry-run friction log (8 items) fully addressed by Kaylee via blocker fix + round-1 polish. All expected-output and clarity ambiguities resolved. Lab 4 README now ready for QA pass when your schedule allows.
+
+## 2026-05-04 — River retired; merged into Book
+
+River (Copilot Expert — Patterns & Prompting) retired. Role and knowledge consolidated into Book, who is now unified Copilot Expert covering platform, surfaces, AND patterns/prompting. For QA feedback on prompting patterns, agent-mode guidance, or Copilot surface verification, route to Book.

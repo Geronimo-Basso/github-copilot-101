@@ -2177,3 +2177,16 @@ The `copilot-cli/` application directory is a **fresh-start, code-self-contained
 **References:**
 - `copilot-cli/README.md` (all 7 fixes integrated)
 
+---
+
+### 2026-05-04T10:32:27+02:00: River merged into Book
+**By:** Geronimo Basso (via Copilot)
+**What:** Retired River (Copilot Expert — Patterns & Prompting). Merged role and knowledge into Book, who is now the unified Copilot Expert covering platform, surfaces, patterns, and prompting.
+**Why:** User identified the two agents as redundant — overlapping Copilot expertise. Consolidation simplifies routing and removes the Book/River pairing step in the lab pipeline.
+**Effects:**
+- `.squad/agents/river/` → moved to `.squad/agents/_alumni/river/` (knowledge preserved).
+- `book/charter.md` expanded: identity, expertise, what-I-own, how-I-work, boundaries now cover both domains.
+- `book/history.md` appended with River's Lab 3 hands-on design notes and the five canonical agent-mode prompting patterns (plan-first, verify-by-running, constrain-blast-radius, checklist, diff-before-commit).
+- `team.md` roster: River row removed; Book role title updated.
+- `routing.md`: River entries folded into Book; lab pipeline simplified to Zoe → Book + Kaylee parallel → Jayne → Zoe.
+- `casting/registry.json`: River status set to `retired` (name reserved, not reused).
