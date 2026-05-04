@@ -652,19 +652,3 @@ Then run one more pass through the custom agent for a domain-specific lens:
 
 Once `/review` and `fastapi-reviewer` both come back clean, the feature itself is done. Commit, push, and open the pull request through your usual workflow.
 
----
-
-## Phase 2.2 — Iteration patterns for single-CLI work
-
-Phase 1 had an "iteration patterns" section for orchestrated work. Single-CLI work has its own characteristic failure modes. Here are the most common, with the fix prompt to use.
-
-| Failure mode | What you see | One-line fix prompt |
-|---|---|---|
-| **Hallucinated endpoint or function** | Copilot writes code that calls `app.delete_activity()` — which doesn't exist in your codebase. | *"You called `delete_activity` but that function doesn't exist. Show me the exact line in `@backend/app.py` where it's defined, or rewrite using only functions that exist."* |
-| **Scope creep** | You asked for a waitlist endpoint; Copilot also reformatted three unrelated files. | *"Revert the changes to files I didn't ask you to touch. Only modify files directly required for the waitlist feature."* |
-| **Lost thread after `/clear`** | You cleared context to free tokens and now Copilot has forgotten the plan. | Re-load context: *"`@backend/app.py @frontend/app.js` We were adding a waitlist feature. Re-read the plan from earlier — here it is: {paste plan}. Continue from step N."* |
-| **Tests "fixed" by weakening assertions** | A failing test is now passing, but you don't trust why. | *"Show the diff between the old and new test. If you changed an assertion, justify it. If you can't, revert the test change and fix the implementation instead."* |
-| **Plan was never followed** | Copilot implemented something different from `/plan`. | *"Compare the implementation to the original plan. List every divergence and justify each one. Revert any divergence that wasn't justified."* |
-| **Endless permission prompts** | Each tool call requires a separate approval. | Use `/allow` for the current session to allowlist a tool you trust (e.g., `read_file`), or pass `--allow-tool {name}` when launching. |
-
-The pattern across all of these is the same: **be specific, point at evidence, and ask for justification.** Copilot is good at responding to constraints — give it some.
