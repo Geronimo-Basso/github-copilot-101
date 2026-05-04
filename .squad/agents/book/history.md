@@ -130,3 +130,7 @@ Each pattern needs a concrete before/after example drawn from a real codebase, n
 - Always teach the failure mode alongside the happy path — learners need to recognize when Copilot is wrong.
 - Will challenge a "best practice" if the evidence is thin. Try the prompt, observe the output, write from evidence.
 
+## Cross-agent notes
+
+2026-05-04: Default model now `claude-opus-4.7`.
+

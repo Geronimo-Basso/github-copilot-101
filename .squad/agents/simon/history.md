@@ -20,3 +20,7 @@ Decisions merged to `.squad/decisions.md`. Lab 4 README ready for QA pass (Jayne
 ## 2026-05-04 — River retired; merged into Book
 
 River (Copilot Expert — Patterns & Prompting) retired. Role and knowledge consolidated into Book, who is now unified Copilot Expert covering platform, surfaces, AND patterns/prompting. For friction observations related to Copilot behavior, prompting feedback, or pattern clarity, route to Book.
+
+## Cross-agent notes
+
+2026-05-04: Default model now `claude-opus-4.7`.

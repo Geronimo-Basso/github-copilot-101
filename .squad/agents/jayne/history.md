@@ -68,3 +68,7 @@ Simon's Lab 4 dry-run friction log (8 items) fully addressed by Kaylee via block
 ## 2026-05-04 — River retired; merged into Book
 
 River (Copilot Expert — Patterns & Prompting) retired. Role and knowledge consolidated into Book, who is now unified Copilot Expert covering platform, surfaces, AND patterns/prompting. For QA feedback on prompting patterns, agent-mode guidance, or Copilot surface verification, route to Book.
+
+## Cross-agent notes
+
+2026-05-04: Default model now `claude-opus-4.7`. Kaylee's lab knowledge base now usable as a QA reference.

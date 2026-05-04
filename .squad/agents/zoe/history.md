@@ -123,3 +123,7 @@ Kaylee shipped `copilot-cli/README.md` from verified AGENDA.md v3. Now in Zoe re
 - **No continuity issues:** Uses `agents/` app throughout, cites Labs 2-3 correctly for custom instructions/skills/MCP, "What We Skip" table accurate.
 - **Voice/tone matches Lab 3:** Friendly, concrete, hands-on. Checkpoints specific and testable.
 - **Kaylee's execution: A-** — high-quality lab, minor polish would make it tighter. Recommended fixes written to `.squad/decisions/inbox/zoe-lab4-review.md` with line numbers for Geronimo or Kaylee to apply (5 min edit).
+
+## Cross-agent notes
+
+2026-05-04: Default model now `claude-opus-4.7` (Layer 0). Kaylee captured canonical Lab Knowledge Base — review her decision drop for 5 cross-lab inconsistencies + 5 proposed follow-ups.

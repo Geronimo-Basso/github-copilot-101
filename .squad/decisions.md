@@ -2190,3 +2190,41 @@ The `copilot-cli/` application directory is a **fresh-start, code-self-contained
 - `team.md` roster: River row removed; Book role title updated.
 - `routing.md`: River entries folded into Book; lab pipeline simplified to Zoe → Book + Kaylee parallel → Jayne → Zoe.
 - `casting/registry.json`: River status set to `retired` (name reserved, not reused).
+
+---
+
+## 2026-05-04: Default model and Lab Knowledge Base
+
+### 2026-05-04T10:39:01+02:00: Default model set to Claude Opus 4.7
+
+**By:** Geronimo Basso (via Copilot)
+**What:** All agents now spawn with `claude-opus-4.7` by default. Persisted in `.squad/config.json` under `defaultModel`. Survives across sessions until cleared.
+**Why:** User directive — "update all the agents to use the Claude Opus 4.7 model".
+**Effect:** Layer 0 of the per-agent model selection now applies `claude-opus-4.7` to every spawn unless overridden by session directive, charter preference, or per-agent override.
+
+---
+
+### 2026-05-04T10:39:01+02:00: Kaylee — canonical lab knowledge base captured
+
+**By:** Kaylee (Lab Builder)
+**Date:** 2026-05-04
+
+**Ingested:**
+- All four lab READMEs end-to-end — `copilot-chat/` (Lab 1, 723 lines), `customize-copilot/` (Lab 2, 1192 lines), `agents/` (Lab 3, 1022 lines), `copilot-cli/` (Lab 4, 954 lines) — plus a peek at the working code in each lab folder (FastAPI app entrypoints, `config.json`, `mcp_servers/activities_server.py`, `copilot-cli/app/`).
+
+**Appended section:**
+- `.squad/agents/kaylee/history.md` now carries a `## Lab Knowledge Base (canonical as of 2026-05-04)` block with one ~250–400-word subsection per lab. Total appended length ≈ 1590 words.
+
+**Cross-lab inconsistencies noticed:**
+1. Labs 1, 2, and 4 all carry "Congratulations / What's Next / Key Takeaways" wrap-up sections that violate the current "no wrap-up" style rule — Lab 3 is the only one already compliant. Lab 1's wrap-up even mis-labels itself as "Lab 02".
+2. Theory placement is inconsistent: Labs 3 and 4 use a single front-loaded `Part 1 — Theory`; Labs 1 and 2 interleave per-step `### 📖 Theory:` headings (legacy pattern).
+3. Pre-Lab depth is uneven: Lab 3 has a 6-step setup with venv + run-the-app sanity check; Lab 4 has only a 2-step package-manager check (no clone, no `cd`, no boot verification).
+4. App-folder layout mismatch: Lab 3 places `backend/`, `frontend/`, `mcp_servers/` directly under `agents/`, while Lab 4 nests the same starter under `copilot-cli/app/` — different on-disk shape for the same Mergington starter.
+5. Lab 1 has minor textual debt: GitHub-only emoji shortcodes (`:bug:`, `:rocket:`), restarted ordered-list numbering, and a "Step 6: Finally commit time" header.
+
+**Recommended follow-ups for Zoe to scope:**
+1. Strip wrap-up sections from Labs 1, 2, 4 (or convert to a single "Further reading" link list) to align with the no-wrap-up rule.
+2. Restructure Labs 1 and 2 to a single `Part 1 — Theory` front-load, matching Labs 3 and 4.
+3. Backfill Lab 4 Pre-Lab with clone / `cd` / app-boot verification steps so all four labs have a consistent on-ramp.
+4. Decide whether to standardize on `copilot-cli/app/`-style nesting or `agents/`-style flat layout for any future lab that ships a sample app, then migrate the odd one out.
+5. Sweep Lab 1 for emoji shortcodes and the "Lab 02" mis-label in its Congratulations block.
